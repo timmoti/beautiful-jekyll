@@ -85,7 +85,7 @@ footer-links-active:
 # Select which share links to show in posts
 share-links-active:
   twitter: false
-  facebook: true
+  facebook: false
   google: false
   linkedin: true
 
@@ -98,7 +98,7 @@ share-links-active:
 #disqus: ""
 
 # Fill in your Google Analytics ID to track your website using GA
-#google_analytics: ""
+#google_analytics: "UA-109832803-1"
 
 # Google Tag Manager ID
 #gtm: ""
