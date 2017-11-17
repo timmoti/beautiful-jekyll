@@ -8,6 +8,7 @@ tags:
 published: true
 subtitle: this is a subtitle
 date: '2016-01-01'
+bigimg: /img/Snacks-and-Ladders.jpg
 ---
 
 This is my first post, how exciting!
