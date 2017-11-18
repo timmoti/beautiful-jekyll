@@ -1,16 +1,24 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: I love data and the science behind it.
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+My name is Timothy and I'm a data science practitioner with an entrepreneurial mindset.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+Where practical data science is concerned, I have 3 beliefs that have shaped my approach towards this monster of a subject:
 
-What else do you need?
+1. I believe in understanding hard concepts fully so as to be able to explain them simply.
+2. I believe that constant experimentation is the key to success.
+3. I believe in remaining skeptical of model results until tested in the real world.
 
-### my history
+My main area of interest is in that of Recommender systems but I also like to work on predictive analytics for topics that are interesting to me at that particular point in my life.
 
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+This blog showcases my data science work but will also include various ramblings on life lessons I've gathered from time to time.
+
+Feel free to connect through one of the links below.
+
+Oh, and may the force be with you.
+
+P.S: If you're wondering, yes those are my initials in the little round box up top which also resembles a 'Pi' symbol. Pretty cool, at least according to me.
+
