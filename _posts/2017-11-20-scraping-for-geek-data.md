@@ -337,7 +337,7 @@ We can see the reason for the duplicates is due to the same user rating the same
 
 ![paedophobic](/img/paedophobic.img)
 
-Unfortunately, we have no timestamp data of when the ratings were given. The next best alternative is to compute the mean of the set of ratings since the ratings are continuous variables on a scale of 1-10
+Unfortunately, we have no timestamp data of when the ratings were given. The next best alternative is to compute the mean of the set of ratings that each user gives to the same game since the ratings are continuous variables on a scale of 1-10
 
 ```python
 # rows where (game, user) is duplicate
