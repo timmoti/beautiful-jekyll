@@ -21,4 +21,31 @@ With the wealth of games and the dearth of time, a good boardgame recommender se
 What's more, the ratings are colour coded on the webpage for quick identification. 
 
 >Bloody-red belongs to a rating of 1 and it gets lighter till rating 5 where it turns purple. 
-The transition from a sky-blue 7-rating and a light-green 8-rating is distinct, only to get to its darkest shade of green at 10
+The transition from a sky-blue 7-rating and a light-green 8-rating is distinct, only to get to its darkest shade of green at 10.
+
+# Scraping and calling
+
+There exists a python module that allows one access to BGG's XML APIs via pythonic methods and classes. It unfortunately is not versatile enough for my needs. I will be scraping the page of the website where I sort all games in descending order of number of ratings. This means the game where most users have rated it will be right at the top. I will then scrape this page to gather the list of games up till the point where I hit the game with just less than 1000 ratings. This will be my game list dataset.
+
+I will then be making API calls to gather the rating data for each game in the game list, as well as the users that have provided them. This will become my ratings list. I will then process this ratings list into an N x M matrix of N rows of users by M columns of games. The values in the matrix will be the ratings provided by users for games.
+
+# Regular imports
+
+We will import the usual python modules for data science work along with Beautiful Soup for HTML extraction and sleep to make sure we don't be a nuisance to the BGG servers.
+
+```python
+import requests
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+import pickle
+from time import sleep
+
+
+%config InlineBackend.figure_format = 'retina'
+%matplotlib inline
+
+sns.set_style('white')
+```
