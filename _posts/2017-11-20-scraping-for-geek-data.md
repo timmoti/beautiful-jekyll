@@ -158,4 +158,6 @@ games.reset_index(inplace=True, drop=True)
 # Write the DF to .csv for future use
 games.to_csv("bgg_gamelist.csv", index=False, encoding="utf-8")
 ```
+By adding over the total number of ratings column in our dataframe, there should be a total of 8,028,799 ratings that we need to collect. We will do so via API calls to the BGG database to form our ratings matrix.
+
 
