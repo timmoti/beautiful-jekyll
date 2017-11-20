@@ -7,7 +7,7 @@ subtitle: >-
   Boardgamegeek.com users
 date: 2017-11-5
 bigimg: /img/BoardGameGeek.jpg
-image: /img/bgg_logo.jpg
+image: /img/bgg-logo.jpg
 ---
 ## A New Post
 
