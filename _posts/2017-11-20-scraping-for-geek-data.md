@@ -49,3 +49,22 @@ from time import sleep
 
 sns.set_style('white')
 ```
+
+In order to make sure that our http requests get sent even though we get disconnected from the network, I have here a function that helps to make our requests robust.
+
+```python
+def request(msg, slp=1):
+    '''A wrapper to make robust https requests.'''
+    status_code = 500  # Want to get a status-code of 200
+    while status_code != 200:
+        sleep(slp)  # Don't ping the server too often
+        try:
+            r = requests.get(msg)
+            status_code = r.status_code
+            if status_code != 200:
+                print "Server Error! Response Code {}. Retrying...".format(r.status_code)
+        except:
+            print "An exception has occurred, probably a momentory loss of connection. Waiting one seconds..."
+            sleep(1)
+    return r
+```
