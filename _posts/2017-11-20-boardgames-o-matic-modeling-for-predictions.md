@@ -366,7 +366,7 @@ I have allocated the ability to select user-user or item-item calculations for t
 
 Following our general approach, here are the steps to model, predict and generate recommendations utilizing the Cosine Similarity function:
 
-## Preprocess data
+### Preprocess data
 ```python
 #Creating an instance of the Recommnder class
 rec = Recommender(df)
@@ -384,7 +384,7 @@ train_sparse = rec.create_sparse(train)
 test_sparse = rec.create_sparse(test)
 ```
 
-## Modeling - Form Similarity Matrix
+### Modeling - Create Similarity Matrix
 ```python
 #Create an instance of the Cosine Similarity Recommender class
 cossim = CosineSim(df)
@@ -398,7 +398,7 @@ The first thing we should normally do is normalize the training set to account f
 CPU times: user 5.83 s, sys: 357 ms, total: 6.19 s
 Wall time: 6.3 s
 ```
-## Predicting scores on test set
+### Predicting scores on test set
 ```python
 #Predicting the scores for test set
 %time item_preds = cossim.predict_for_test(train, test_sparse, item_sims)
@@ -408,7 +408,7 @@ Wall time: 43.5 s
 ```
 We measure wall time so we can appreciate how long it takes to generate these recommendations which is important when we decide to push it to production.
 
-## Evaluate with RMSE
+### Evaluate with RMSE
 First we calculate our baseline RMSE which is taken as the same value of the mean rating for the entire dataset predicted for each datapoint in the test set.
 
 ```python
@@ -442,7 +442,7 @@ error_cos
 ```
 We can observe a decrease of about 10% from the baseline score.
 
-## Performing recommendations
+### Performing recommendations
 
 We will be performing recommendations for myself as I am an active user of the site and have rated quite a number of games (226 to be exact). We calculate the similarity matrix again, this time utilizing the entire dataset before making the predictions and utilizing the recommendation function
 
@@ -464,7 +464,7 @@ me_cos.head(20)
 ```
 
 ![me_cossim](/img/me_cossim.png)
-*An example of how a top 20 list would look like
+*An example of how a top 20 list would look like*
 
 This list of games is quite an interesting one. I own one of the games (Cry Havoc) and have yet to play it but purchased it after performing intensive research. Several of the games like Dead of Winter, Viticulture and Scythe are in my wishlist. There are some games that I have looked at but have no interest in trying like Cash n Guns and Forbidden Stars. Most of the other games I am aware of but have not done deeper research and suggests that I should do so based on its recommendation.
 One thing interesting about this list is the range of games it provides. It does not include solely the top games as determined by the game rank but has a good mix from the top 600. In fact, Monikers, ranked 557, is one I have never heard of till now.
@@ -492,7 +492,7 @@ It should be understood that the latent space that is created by mapping both us
 We explore this concept with the Singular Value Decomposition of the ratings matrix first.
 
 ![svd_diagram](/img/svd_diagram.png)
-*A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.
+*A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.*
 
 We build a subclass from our base Recommender class to represent the SVD model
 
