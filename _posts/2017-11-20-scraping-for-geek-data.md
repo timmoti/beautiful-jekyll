@@ -9,7 +9,9 @@ date: '2017-10-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/Game-Geek.png
 ---
-[Boardgamegeek](https://boardgamegeek.com/) is board game nirvana for geeks, nerds and the occasional cool person. It is like Wikipedia to your science. This website holds a massive library of more than 90,000 games, with about 800,000 registered users and more than 150,000 active monthly users. 
+[Boardgamegeek](https://boardgamegeek.com/) is board game nirvana for geeks, nerds and the occasional cool person. It is like Wikipedia to your science. 
+
+This website holds a massive library of more than 90,000 games, with about 800,000 registered users and more than 150,000 active monthly users. 
 
 What is more impressive about this site is how open the data is. You can view anyone's boardgame collection, how they have rated their games, how often they have been playing and even their wishlist of games to buy and/or try. The notion that this website is like the swiss army knife of the boardgaming world makes it easy to entrust it with everything boardgame-related in one's life.
 
