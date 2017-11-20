@@ -9,8 +9,6 @@ date: '2017-10-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/Game-Geek.png
 ---
-*This is part 1 of a 3 part series on building a board game recommender system for BGG.com users. Part 2, where we model and predict the recommendations can be found [here](). Part 3, where we build a web app and collect online evaluations can be found [here]().*
-
 [Boardgamegeek](https://boardgamegeek.com/) is board game nirvana for geeks, nerds and the occasional cool person. It is like Wikipedia to your science. This website holds a massive library of more than 90,000 games, with about 800,000 registered users and more than 150,000 active monthly users. 
 
 What is more impressive about this site is how open the data is. You can view anyone's boardgame collection, how they have rated their games, how often they have been playing and even their wishlist of games to buy and/or try. The notion that this website is like the swiss army knife of the boardgaming world makes it easy to entrust it with everything boardgame-related in one's life.
@@ -480,4 +478,4 @@ rate10.to_pickle('rate10_pickle')
 # Coming up
 We take our ratings matrix and put it through some serious work with the sole purpose of filling up all those NaNs with solid predictions. We will look at neighborhood as well as latent factor methods and perform offline evaluations on 3 algorithms. Onward!
 
-*Part 2 of our 3-part series on building a board game recommender system for BGG users can be found [here]().*
+*This is part 1 of a 3 part series on building a board game recommender system for BGG.com users. Part 2, where we model and predict the recommendations can be found [here](). Part 3, where we build a web app and collect online evaluations can be found [here]().*
