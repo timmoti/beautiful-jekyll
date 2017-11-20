@@ -479,3 +479,5 @@ rate10.to_pickle('rate10_pickle')
 We take our ratings matrix and put it through some serious work with the sole purpose of filling up all those NaNs with solid predictions. We will look at neighborhood as well as latent factor methods and perform offline evaluations on 3 algorithms. Onward!
 
 *This is part 1 of a 3 part series on building a board game recommender system for BGG.com users. Part 2, where we model and predict the recommendations can be found [here](). Part 3, where we build a web app and collect online evaluations can be found [here]().*
+
+*The accompanying ipython notebook can be found in the following [Github repo](https://github.com/timmoti/boardgames-o-matic).*
