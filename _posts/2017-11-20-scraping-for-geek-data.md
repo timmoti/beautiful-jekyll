@@ -135,7 +135,7 @@ The output helps keep our sanity in check and ensures we are on the right track.
 ![scraping output](/img/scraping_output.png)
 *Notice we actually reached slightly below 1000 in our final total minimum ratings but that's ok. More data never did harm anyone.*
 
-# Analyzing our games dataset
+# Preprocessing our games dataset
 From our output, we know that we have scraped 21 pages and if you were to refer to the image of the BGG website, the top right corner indicates that there are 941 pages of games. It might seem that we have only scratched the surface, but if the pareto principle serves us correctly, this small percentage of games should substantially hold majority of the ratings on the website.
 
 ![gamelist head tail](/img/gamelist_head_tail.png)
@@ -145,3 +145,9 @@ Looking at the head of our games dataframe, you can see that the most popular ga
 We see rows of NaNs in the bottom of our dataframe however, which actually corresponds to game expansions. It was created when we analyzed for a game rank in our try/except block in the code above, moving past the entry if it does not have a rank. Expansions do not have ranks on BGG but people are able to rate them.
 
 We will not be including expansions in our analysis as recommending an expansion to someone who already likes the game is quite a no-brainer and is not useful as a recommendation.
+
+![drop expansions](drop_expansions.png)
+
+We have dropped a grand total of 293 expansions, leaving us with 1807 games
+
+As the games dataframe was put together by concatenating several smaller dataframes together, the index will need to be reset.
