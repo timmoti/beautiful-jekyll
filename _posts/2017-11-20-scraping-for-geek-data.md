@@ -7,7 +7,7 @@ date: '2017-10-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/Game-Geek.png
 ---
-*This is part 1 of a 3 part series on building a board game recommender system for BGG.com users. Part 2, where we model and predict the recommendations can be found [here](). Part 3, where we build a web app and collect online evaluations can be found [here]().
+*This is part 1 of a 3 part series on building a board game recommender system for BGG.com users. Part 2, where we model and predict the recommendations can be found [here](). Part 3, where we build a web app and collect online evaluations can be found [here]().*
 
 [Boardgamegeek](https://boardgamegeek.com/) is board game nirvana for geeks, nerds and the occasional cool person. It is like Wikipedia to your science. This website holds a massive library of more than 90,000 games, with about 800,000 registered users and more than 150,000 active monthly users. 
 
