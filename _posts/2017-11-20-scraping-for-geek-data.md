@@ -72,7 +72,7 @@ def request(msg, slp=1):
 # The Scrape
 Looking at the list of games sorted in descending order, I will extract games that have at least 1000 ratings. This is so that I would have sufficient information about each game to generate the recommendations.
 
-![Games sorted in descending order of number of ratings](./assets/sorted_games.png)
+![Games sorted in descending order of number of ratings](/img/sorted_games.png)
 *Column highlighted in red indicates number of ratings a game has. Page taken from the BGG.com website*
 
 ## Making sense of the HTML code
@@ -84,7 +84,7 @@ Next, we extract the rank, ID and name of each game by identifying the next 3 <a
   
 Finally, we acquire the number of ratings by looking at all <tr> tags with class attribute "collection_bggrating" and perform some more string processing techniques on them.
 
-![scraping](./assets/scraping.png)
+![scraping](/img/scraping.png)
 *Output of scraping that makes sense by reading together with code below*
 
 The commented code for getting the scraping results is right here:
