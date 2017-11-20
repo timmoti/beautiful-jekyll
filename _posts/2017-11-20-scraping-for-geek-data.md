@@ -146,7 +146,7 @@ We see rows of NaNs in the bottom of our dataframe however, which actually corre
 
 We will not be including expansions in our analysis as recommending an expansion to someone who already likes the game is quite a no-brainer and is not useful as a recommendation.
 
-![drop expansions](/img/drop_expansions.png)
+![drop expansions](/img/drop_expansions copy.png)
 
 We have dropped a grand total of 293 expansions, leaving us with 1807 games
 
