@@ -335,7 +335,7 @@ After dropping all duplicates, we observe that the number of ratings has been re
 
 We can see the reason for the duplicates is due to the same user rating the same game twice or more. This can happen when a user adds a new version / edition of the game to his collection and gives it a different rating. Or like the example below, just can't make up his mind.
 
-![paedophobic](/img/paedophobic.img)
+![paedophobic](/img/paedophobic.png)
 
 Unfortunately, we have no timestamp data of when the ratings were given. The next best alternative is to compute the mean of the set of ratings that each user gives to the same game since the ratings are continuous variables on a scale of 1-10
 
