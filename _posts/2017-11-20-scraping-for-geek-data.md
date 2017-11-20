@@ -146,8 +146,16 @@ We see rows of NaNs in the bottom of our dataframe however, which actually corre
 
 We will not be including expansions in our analysis as recommending an expansion to someone who already likes the game is quite a no-brainer and is not useful as a recommendation.
 
-![drop expansions](drop_expansions.png)
+![drop expansions](/img/drop_expansions.png)
 
 We have dropped a grand total of 293 expansions, leaving us with 1807 games
 
-As the games dataframe was put together by concatenating several smaller dataframes together, the index will need to be reset.
+As the games dataframe was put together by concatenating several smaller dataframes together, the index will need to be reset. We write the gamelist to a csv file too for safekeeping
+
+```python
+# Reset the index since we concatenated a bunch of DFs with the same index into one DF
+games.reset_index(inplace=True, drop=True)
+# Write the DF to .csv for future use
+games.to_csv("bgg_gamelist.csv", index=False, encoding="utf-8")
+```
+
