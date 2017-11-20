@@ -1,6 +1,6 @@
 ---
 layout: post
-published: true
+published: false
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
@@ -398,4 +398,59 @@ The first thing we should normally do is normalize the training set to account f
 CPU times: user 5.83 s, sys: 357 ms, total: 6.19 s
 Wall time: 6.3 s
 ```
+## Predicting scores on test set
+```python
+#Predicting the scores for test set
+%time item_preds = cossim.predict_for_test(train, test_sparse, item_sims)
+
+CPU times: user 36 s, sys: 5.92 s, total: 41.9 s
+Wall time: 43.5 s
+```
+We measure wall time so we can appreciate how long it takes to generate these recommendations which is important when we decide to push it to production.
+
+## Evaluate with RMSE
+First we calculate our baseline RMSE which is taken as the same value of the mean rating for the entire dataset predicted for each datapoint in the test set.
+
+```python
+#Converting test set to an array
+y = test.fillna(0).values
+
+#Getting user means
+mean = rec.get_user_mean()
+
+#Calculating overall mean
+overall_mean = rec.get_overall_mean(mean)
+overall_mean
+
+7.398810764577983
+
+#Computing baseline error
+baseline_error = rec.get_baseline_rmse(y, overall_mean)
+baseline_error
+
+1.4869803145678728
+```
+
+We then calculate our RMSE score for the Cosine Similarity model.
+
+```python
+#Calculating the error
+error_cos = cossim.get_rmse(y, item_preds)
+error_cos
+
+1.3339479358142938
+```
+We can observe a decrease of about 10% from the baseline score.
+
+## Performing recommendations
+
+We will be performing recommendations for myself as I am an active user of the site and have rated quite a number of games (226 to be exact). We calculate the similarity matrix again, this time utilizing the entire dataset before making the predictions and utilizing the recommendation function
+
+```python
+#Calculate item-item similarity matrix of entire ratings data
+%time all_sims = cossim.find_similarity(df_sparse)
+
+
+
+
 
