@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
@@ -449,6 +449,239 @@ We will be performing recommendations for myself as I am an active user of the s
 ```python
 #Calculate item-item similarity matrix of entire ratings data
 %time all_sims = cossim.find_similarity(df_sparse)
+
+CPU times: user 5.9 s, sys: 359 ms, total: 6.26 s
+Wall time: 6.4 s
+
+#Perform recommendation for a specific user
+%time me_cos = cossim.recommend('passthedynamite', all_sims, games)
+
+CPU times: user 10 s, sys: 5.39 s, total: 15.4 s
+Wall time: 16.6 s
+
+#Observe top 20 recommendations
+me_cos.head(20)
+```
+
+![me_cossim](/img/me_cossim.png)
+*An example of how a top 20 list would look like
+
+This list of games is quite an interesting one. I own one of the games (Cry Havoc) and have yet to play it but purchased it after performing intensive research. Several of the games like Dead of Winter, Viticulture and Scythe are in my wishlist. There are some games that I have looked at but have no interest in trying like Cash n Guns and Forbidden Stars. Most of the other games I am aware of but have not done deeper research and suggests that I should do so based on its recommendation.
+One thing interesting about this list is the range of games it provides. It does not include solely the top games as determined by the game rank but has a good mix from the top 600. In fact, Monikers, ranked 557, is one I have never heard of till now.
+
+Let's take a look at the distribution of this list of 20 games in terms of number of ratings and ranking on Boardgamegeek.
+
+```python
+fig, ax = plt.subplots(1,2, figsize=(13,6))
+sns.distplot(me_cos.head(20)['nratings'], ax=ax[0])
+sns.distplot(me_cos.head(20)['gamerank'], ax=ax[1])
+plt.show()
+```
+
+![cossim_dist](/img/cossim_dist.png)
+
+Most of the games in this top 20 list have less than 5000 ratings which seems to suggest a rather good spread of game popularity in its recommendation. For reference, the maximum number of ratings for a game in our dataset is 71,279 and the least is 975.
+
+The majority of the games recommended also lies between 1-200 in gamerank which suggests that the recommender is recommending me games that have a high approval rate with the user population. The spread is not too bad hitting games that rank in the 500s. This is more diverse than some lists recommended further down as we shall soon see. For reference, the top ranked game in our database is 1 while the least is 14344
+
+# Latent factor method - Singular Value Decomposition
+The latent factor method decomposes the sparse ratings matrix into a set of latent vectors for both users and items. These are low rank approximations of the original matrix and helps to address the issue of sparsity that is characteristic of any form of explicit rating data.
+
+It should be understood that the latent space that is created by mapping both user and items onto is made up of item and user dimensions, some of which are explainable like theme and mechanics of the game, a user's preference for certain genres and game difficulties to unexplainable concepts. Each user and item can be explained by some combination of these factors and therefore predictions of a user's preference for an item can be made through a simple dot product of the user's latent vector by the transpose of that item's corresponding latent vector.
+
+We explore this concept with the Singular Value Decomposition of the ratings matrix first.
+
+![svd_diagram](/img/svd_diagram.png)
+*A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.
+
+We build a subclass from our base Recommender class to represent the SVD model
+
+```python
+from scipy.sparse.linalg import svds
+class SVD(Recommender):
+    '''
+    A model for getting game recommendations by 
+    calculating singular values through matrix
+    decomposition into its latent factors
+    
+    Params
+    ======
+    ratings : (nd_array)
+        Normalized ratings array
+    '''
+    def __init__(self, normed_ratings):
+        self.normed_ratings = normed_ratings
+        
+    def train(self, k=50):
+        '''
+        Trains SVD model on ratings
+        
+        Params
+        ======
+        k : (int)
+            Specifies number of latent factors to decompose into
+        '''
+        U, sigma, Vt = svds(self.normed_ratings, k)
+        sigma = np.diag(sigma)
+        return U, sigma, Vt
+    
+    def predict(self, U, sigma, Vt, test, mean):
+        '''
+        Outputs predictions for entire ratings matrix as well
+        as for test set.
+        
+        Params
+        ======
+        test : (Dataframe)
+            Test set pandas dataframe
+        
+        mean : (pd.Series)
+            Vector of user means
+        '''
+        all_predictions = np.dot(np.dot(U, sigma), Vt) + mean.reshape(-1, 1)
+        test_predictions = all_predictions[test.fillna(0).as_matrix().nonzero()]
+        
+        return all_predictions, test_predictions
+    
+    def recommend(self, ratings, user, games, predictions):
+        '''
+        Provides recommendations for the specified user
+        
+        Params
+        ======
+        user : (string)
+            username with at least 10 ratings in database
+        
+        games : (Dataframe)
+            Dataframe of game list
+        
+        predictions : (nd_array)
+            predictions of entire ratings matrix
+        '''
+        user_idx = ratings.index.get_loc(user)
+        preds = predictions[user_idx]
+        rated = ratings.loc[user].fillna(0).as_matrix().nonzero()
+
+        mask = np.ones_like(preds, dtype=bool)
+        mask[rated] = False
+        preds[~mask] = 0
+
+        predictions = pd.Series(preds, index=ratings.columns, name='predictions')
+        recommendations = games.join(predictions, on='gameid')
+        return recommendations.sort_values('predictions', ascending=False)
+ ```
+ Unlike the cosine similarity class, our the prediction function in our SVD class predicts for the entire matrix and not just the test set. Because of this, our recommend function needs to be tweaked from that of the cosine similarity class.
+ 
+ ## Normalize, instantiate and train
+ ```python
+ #Normalize training set
+train_normed = rec.normalize(train_sparse)
+
+#Instatiate SVD class
+svd_train = SVD(train_normed)
+
+#Train SVD model
+%time U, sigma, Vt = svd_train.train(k=50)
+
+CPU times: user 1min 33s, sys: 1.25 s, total: 1min 34s
+Wall time: 49.5 s
+```
+We start off by training an SVD model with 50 latent factors
+
+## Obtain predictions for test set and evaluate RMSE
+```python
+#Make predictions for test set
+%time all_preds_svd50_train, test_preds_svd50 = svd_train.predict(U, sigma, Vt, test, mean)
+
+#Evaluate RMSE for k=50
+error_svd50 = svd_train.get_rmse(y, test_preds_svd50)
+error_svd50
+
+1.2861092502817428
+```
+This value is 3% less than the value calculated for the Cosine Similarity method.
+
+## Recommend games
+
+In performing recommendations, we utilize the entire dataset, not just the train set, so as to provide the most accurate and relevant suggestions.
+
+```python
+#Recommend games for a specific user
+%time me_svd_50 = svd.recommend(df, 'passthedynamite', games, all_preds_svd50)
+
+#Displaying top 20 games with k=50
+me_svd_50.head(20)
+```
+
+![svd50_list](/img/svd50_list.png)
+
+This list of games seem to be restricted to games within the top 200 or so. As it is, I am aware of all the games and have variations of some of the games listed such as Ticket to Ride: Europe and Dominion: Intrigue. I actually rate their sister games really highly which is why they appear.
+
+![svd50_dist](/img/sv50_dist.png)
+
+While the maximum number of ratings was in the 20,000s for the cosine similarity model, the SVD model is giving me games that hit the high 30,000s in number of ratings. A look at the gamerank distribution also shows that the games fall between ranks 1-200 which suggests less diversity from the top-ranked games.
+
+What if we were to change the number of latent factors to 100?
+
+```python
+#Train SVD model with k=100
+%time U, sigma, Vt = svd_train.train(k=100)
+
+#Make predictions
+%time all_preds_svd100_train, test_preds_svd100 = svd_train.predict(U, sigma, Vt, test, mean)
+
+#Evaluate RMSE for k=100
+error_svd_100 = svd_train.get_rmse(y, test_preds_svd100)
+error_svd_100
+
+1.2954613798828805
+```
+The result is slightly worse than k=50 but still remains better than the RMSE for cosine similarity
+
+```python
+#Recommend games for a specific user
+%time me_svd_100 = svd.recommend(df, 'passthedynamite', games, all_preds_svd100)
+
+#Displaying top 20 games with k=100
+me_svd_100.head(20)
+```
+![svd100_list](/img/svd100_list.png)
+
+Most of the games recommended come from the top 100 games. One big surprise here is that tic-tac-toe was actually recommended. A quick check reveals that it is the bottom-ranked game from the 1807 in our dataset. The list is really different from the previous 2 but nothing I have not seen or heard before. Not much serendipity here.
+
+![svd100_dist](/img/svd100_dist.png)
+
+The lower end of number of ratings of games in this list seems to have shifted up with the majority being at the 10,000s range. We can also see the outlier of the last-ranked game of our list that severely skews our gamerank distribution.
+
+Let's go the other way and train on 10 latent factors
+
+```python
+#Train SVD model with k=10
+%time U, sigma, Vt = svd_train.train(k=10)
+
+#Make predictions
+%time all_preds_svd10_train, test_preds_svd10 = svd_train.predict(U, sigma, Vt, test, mean)
+
+#Evaluate RMSE for k=10
+error_svd_10 = svd_train.get_rmse(y, test_preds_svd10)
+error_svd_10
+
+1.2784756733580973
+```
+With 10 latent factors, I get my lowest RMSE score yet. Let's see what games it recommends to me.
+
+![svd10_list](/img/svd10_list.png)
+
+The majority of these games are within the top 100 games which suggests that they are highly popular and well-regarded. I am intersted in trying some of these games but don't like the number 2 game of which I had previously rated a similar version quite poorly. Let's take a look at the distributions of the number of ratings and gamerank
+
+![svd10_dist](/img/svd10_dist.png)
+
+As suspected, this list contains the top regarded games on BGG. This can be observd through the smaller range of games recommended in terms of gamerank from 1-150 and the inclusion of a game with a high number of ratings, Carcassone with 70895 ratings to be exact. The lower end of the number of ratings has also shifted to games where at least 10,000 users have rated the game.
+
+
+
+
+
 
 
 
