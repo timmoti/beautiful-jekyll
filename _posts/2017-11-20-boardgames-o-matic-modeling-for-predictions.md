@@ -576,7 +576,8 @@ class SVD(Recommender):
  ```
  Unlike the cosine similarity class, our the prediction function in our SVD class predicts for the entire matrix and not just the test set. Because of this, our recommend function needs to be tweaked from that of the cosine similarity class.
  
- ## Normalize, instantiate and train
+## Normalize, instantiate and train
+
  ```python
  #Normalize training set
 train_normed = rec.normalize(train_sparse)
@@ -593,6 +594,7 @@ Wall time: 49.5 s
 We start off by training an SVD model with 50 latent factors
 
 ## Obtain predictions for test set and evaluate RMSE
+
 ```python
 #Make predictions for test set
 %time all_preds_svd50_train, test_preds_svd50 = svd_train.predict(U, sigma, Vt, test, mean)
