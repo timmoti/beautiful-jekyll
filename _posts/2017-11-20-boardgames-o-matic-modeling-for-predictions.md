@@ -369,7 +369,7 @@ class CosineSim(Recommender):
         recommendations = games.join(predictions, on='gameid')
         return recommendations.sort_values('predictions', ascending=False)
 ```
-I have allocated the ability to select user-user or item-item calculations for the find_similarity, predict_for_test and recommend functions which works on a smaller toy dataset. It's interesting to note that the prediction function I coded for thie Cosine Similarity model predicts only for the holdout values on the test set and not on the entire matrix for the sake of computational speed.
+I have allocated the ability to select user-user or item-item calculations for the find_similarity, predict_for_test and recommend functions which works on a smaller toy dataset. It would be interesting to note that the prediction function I coded for this Cosine Similarity model predicts only for the holdout values on the test set and not on the entire matrix for the sake of computational speed.
 
 Following our general approach, here are the steps to model, predict and generate recommendations utilizing the Cosine Similarity function:
 
@@ -390,6 +390,7 @@ train_sparse = rec.create_sparse(train)
 #Create sparse matrix for test set
 test_sparse = rec.create_sparse(test)
 ```
+We split the matrix such that there are 2 ratings in the test set for each user. I chose the value of 2 so that for our raters with only 10 ratings, I have at least 80% of their ratings data to predict on their remaining 20%. 
 
 ### Modeling - Create Similarity Matrix
 ```python
@@ -473,7 +474,7 @@ me_cos.head(20)
 ![me_cossim](/img/me_cossim.png)
 *An example of how a top 20 list would look like*
 
-This list of games is quite an interesting one. I own one of the games (Cry Havoc) and have yet to play it but purchased it after performing intensive research. Several of the games like Dead of Winter, Viticulture and Scythe are in my wishlist. There are some games that I have looked at but have no interest in trying like Cash n Guns and Forbidden Stars. Most of the other games I am aware of but have not done deeper research and suggests that I should do so based on its recommendation.
+This list of games is quite an interesting one. I own one of the games (Cry Havoc) and have yet to play it but purchased it after performing intensive research. Several of the games like Dead of Winter, Viticulture and Scythe are in my wishlist. There are some games that I have looked at but have no interest in trying like Cash n Guns and Forbidden Stars. Most of the other games I am aware of but have not done deeper research which suggests that I should do so based on its recommendation.
 One thing interesting about this list is the range of games it provides. It does not include solely the top games as determined by the game rank but has a good mix from the top 600. In fact, Monikers, ranked 557, is one I have never heard of till now.
 
 Let's take a look at the distribution of this list of 20 games in terms of number of ratings and ranking on Boardgamegeek. 
