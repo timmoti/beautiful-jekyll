@@ -7,7 +7,7 @@ subtitle: >-
   Boardgamegeek.com users
 date: '2017-11-11'
 image: /img/bgg-logo.jpg
-bigimg: /img/main_screen_darkened.png
+bigimg: /img/title_darkened.png
 ---
 ## A New Post
 
