@@ -623,7 +623,7 @@ me_svd_50.head(20)
 
 This list of games seem to be restricted to games within the top 200 or so. As it is, I am aware of all the games and have variations of some of the games listed such as Ticket to Ride: Europe and Dominion: Intrigue. I actually rate their sister games really highly which is why they appear.
 
-![svd50_dist](/img/sv50_dist.png)
+![svd50_dist](/img/svd50_dist.png)
 
 While the maximum number of ratings was in the 20,000s for the cosine similarity model, the SVD model is giving me games that hit the high 30,000s in number of ratings. A look at the gamerank distribution also shows that the games fall between ranks 1-200 which suggests less diversity from the top-ranked games.
 
