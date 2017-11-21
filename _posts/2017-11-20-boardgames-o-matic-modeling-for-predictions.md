@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
