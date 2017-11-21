@@ -684,6 +684,10 @@ As suspected, this list contains the top regarded games on BGG. This can be obse
 In this final model, we will attempt to factorize the ratings matrix using the Alternating Least Squares method of minimizing the cost function. It works by holding one set of latent factors, either the user or item vector, constant at any one point in time while solving a linear equation for the other. It then alternates until convergence to a minimum. As opposed to SVD, bias terms are added to the cost function and singular values are not calculated.
 
 ![mf](/img/mf.png)
-*R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. Solving for R<sub>ij</sub> *
+*R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. For a user i on item j, solving for R<sub>ij</sub> is simply a dot product of the U<sub>ik</sub> vector and the P<sup>T</sup><sub>ik</sub> vector.*
 
-R^ij^
+The cost function for matrix factorization depicted below is represented as solving for the mean squared error of the original rating matrix R with its approximation U x P<sup>T</sup> as its first term and with regularization terms accounting for user and item biases in its second term.
+
+![als_cost_function](/img/als_cost_function.png)
+
+
