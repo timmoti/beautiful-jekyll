@@ -1,6 +1,6 @@
 ---
 layout: post
-published: true
+published: false
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
@@ -496,7 +496,7 @@ We explore this concept with the Singular Value Decomposition of the ratings mat
 ![svd_diagram](/img/svd_diagram.png)
 *A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. The singular values determine the magnitude of effect of the latent factors in determining the predictions. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.*
 
-We build a subclass from our base Recommender class to represent the SVD model
+We build a subclass from our base Recommender class to represent the SVD model. In it, we will be using the svds function of the scipy sparse library that takes in a sparse matrix and finds the largest k singular values of the matrix where k is the number of latent factors specified. 
 
 ```python
 from scipy.sparse.linalg import svds
