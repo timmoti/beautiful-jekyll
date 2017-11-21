@@ -9,7 +9,7 @@ date: 2017-11-5
 bigimg: /img/BoardGameGeek.jpg
 image: /img/bgg-logo.jpg
 ---
-In part 1, we extracted the games and ratings data via webscraping and api calls to the Boardgamegeek website. 
+In [part 1](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/), we extracted the games and ratings data via webscraping and api calls to the [Boardgamegeek](http://boardgamegeek.com) website. 
 
 In this section, we will be attempting to put these ratings through various models in order to generate recommendations for users on the website.
 
