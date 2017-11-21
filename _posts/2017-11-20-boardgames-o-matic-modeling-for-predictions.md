@@ -15,7 +15,9 @@ In this section, we will be attempting to put these ratings through various mode
 
 To recap, we have 120,679 users and 1807 games forming a N x M matrix of 120,679 x 1807 with a total of 7.7 million ratings. I have only selected users that have rated at least 10 games or more. Our matrix density is 3.54% or 96.45% sparse.
 
-I will be utilizing both neighbourhood and latent factor models from the collaborative filtering approach to predict ratings for each user on the games he/she has yet to rate. For the neighbourhood method, I will be employing the use of the cosine similarity function. Matrix factorization will be accomplished via the SVD method as well as a Non-negative matrix factorization method utilizing weighted alternating least squares to minimize the loss function.
+I will be utilizing both neighbourhood and latent factor models from the collaborative filtering approach to predict ratings for each user on the games he/she has yet to rate. 
+
+For the neighbourhood method, I will be employing the use of the cosine similarity function. As for the latent factor models, matrix factorization will be accomplished via the SVD method as well as non-negative matrix factorization method utilizing alternating least squares to optimize the loss function.
 
 Offline evaluations will be conducted using RMSE.
 
