@@ -1,6 +1,6 @@
 ---
 layout: post
-published: true
+published: false
 title: 'Boardgames-O-Matic: Flask app and online evaluations'
 subtitle: >-
   Part 3 of 3 where I build a board games recommender system for
@@ -31,4 +31,4 @@ If you look at the diagram, the routes section of the controller file contains s
 def about():
 	return flask.render_template('bgg_about.html')
 ```
-
+The function is called by the 
