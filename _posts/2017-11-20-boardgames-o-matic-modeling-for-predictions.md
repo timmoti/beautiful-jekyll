@@ -48,7 +48,7 @@ from sklearn.metrics import mean_squared_error
 
 sns.set_style('white')
 ```
-We import scipy.sparse so that we can perform sparse matrix calculations on our sparse matrix which speeds up calculations. The sparse format stores only the necessary data in 3 arrays and ignores all the other empty cells.
+We import scipy.sparse so that we can perform sparse matrix calculations on our sparse ratings matrix which speeds up calculations. The sparse format stores only the necessary data in 3 arrays and ignores all the other empty cells.
 
 We also import mean_squared_error to aid us in our calculation of the Root Mean Squared Error(RMSE) evaluation metric.
 
@@ -58,7 +58,7 @@ df.shape
 (120679, 1807)
 ```
 
-We also import out pickled file from the part 1 and make sure it contains the matrix in the right shape
+We also import our pickled file from the part 1 and make sure it contains the matrix in the right shape
 
 ```python
 games = pd.read_csv('bgg_gamelist.csv')
@@ -233,6 +233,9 @@ The most interesting method in the base class would probably be the train_test_s
 
 # Neighbourhood method - Cosine similarity recommender
 Our first method to determine recommendations is by calculating the similarity between users and items. I have decided to employ the cosine similarity function owing to its favourable representation in the recommender systems community.
+
+![cosine](/img/cosine.png)
+*The cosine similarity function measures the cosine angle between 2 vectors, and in our case, between 2 game or user vectors of our ratings matrix. It is calculated by the dot product of the vectors over the magnitude of each vector. It outputs the cosine similarity score to evaluate how similar 2 vectors are to each other.*
 
 A similarity matrix is first obtained between each item pair or user pair. A prediction function is then used to predict ratings for results held out in the test set in order to compare the accuracy through the RMSE loss function.
 
