@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
@@ -684,6 +684,6 @@ As suspected, this list contains the top regarded games on BGG. This can be obse
 In this final model, we will attempt to factorize the ratings matrix using the Alternating Least Squares method of minimizing the cost function. It works by holding one set of latent factors, either the user or item vector, constant at any one point in time while solving a linear equation for the other. It then alternates until convergence to a minimum. As opposed to SVD, bias terms are added to the cost function and singular values are not calculated.
 
 ![mf](/img/mf.png)
-*R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. Solving for R~ij~ *
+*R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. Solving for R<sub>ij</sub> *
 
 R^ij^
