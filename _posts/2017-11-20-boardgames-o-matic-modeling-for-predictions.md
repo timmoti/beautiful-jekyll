@@ -471,7 +471,9 @@ me_cos.head(20)
 This list of games is quite an interesting one. I own one of the games (Cry Havoc) and have yet to play it but purchased it after performing intensive research. Several of the games like Dead of Winter, Viticulture and Scythe are in my wishlist. There are some games that I have looked at but have no interest in trying like Cash n Guns and Forbidden Stars. Most of the other games I am aware of but have not done deeper research and suggests that I should do so based on its recommendation.
 One thing interesting about this list is the range of games it provides. It does not include solely the top games as determined by the game rank but has a good mix from the top 600. In fact, Monikers, ranked 557, is one I have never heard of till now.
 
-Let's take a look at the distribution of this list of 20 games in terms of number of ratings and ranking on Boardgamegeek.
+Let's take a look at the distribution of this list of 20 games in terms of number of ratings and ranking on Boardgamegeek. 
+
+>As an interesting tidbit, Games are ranked on BGG based on a value called the Geek rating which is essentially a bayesian average of all the ratings a game receives. The prior mean, thought to be 5.5, is multiplied by a constant, C, and is factored into the calculation of a game's average rating. This is done to prevent new games from being manipulated into entering the ranking system at a high level with just a few ratings. C is unknown but is thought to be 100.
 
 ```python
 fig, ax = plt.subplots(1,2, figsize=(13,6))
@@ -680,8 +682,8 @@ The majority of these games are within the top 100 games which suggests that the
 
 As suspected, this list contains the top regarded games on BGG. This can be observd through the smaller range of games recommended in terms of gamerank from 1-150 and the inclusion of a game with a high number of ratings, Carcassone with 70895 ratings to be exact. The lower end of the number of ratings has also shifted to games where at least 10,000 users have rated the game.
 
-# Latent Factor model - Non-Negative Matrix Factorization with Weighted Alternating Least Squares
-In this final model, we will attempt to factorize the ratings matrix using the Alternating Least Squares method of minimizing the cost function. It works by holding one set of latent factors, either the user or item vector, constant at any one point in time while solving a linear equation for the other. It then alternates until convergence to a minimum. As opposed to SVD, bias terms are added to the cost function and singular values are not calculated.
+# Latent Factor model - Non-Negative Matrix Factorization with Alternating Least Squares
+In this final model, we will attempt to factorize the ratings matrix using the Alternating Least Squares method of optimizing the cost function. It works by holding one set of latent factors, either the user or item vector, constant at any one point in time while solving a linear equation for the other. It then alternates until convergence to a minimum. As opposed to SVD, bias terms are added to the cost function and singular values are not calculated.
 
 ![mf](/img/mf.png)
 *R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. For a user i on item j, solving for R<sub>ij</sub> is simply a dot product of the U<sub>ik</sub> vector and the P<sup>T</sup><sub>ik</sub> vector.*
@@ -690,4 +692,237 @@ The cost function for matrix factorization depicted below is represented as solv
 
 ![als_cost_function](/img/als_cost_function.png)
 
+A class is built off the base Recommender class and a grid search was applied to find the best hyperparameters of regularization, number of iterations of the alternating least squares step as well as the optimal number of latent factors.
 
+```python
+from numpy.linalg import solve
+class ALSMF(Recommender):
+    def __init__(self, 
+                 ratings, 
+                 n_factors=40, 
+                 item_reg=0.0, 
+                 user_reg=0.0,
+                 verbose=False):
+        """
+        Train a matrix factorization model to predict empty 
+        entries in a matrix. The terminology assumes a 
+        ratings matrix which is ~ user x item
+        
+        Params
+        ======
+        ratings : (ndarray)
+            User x Item matrix with corresponding ratings
+        
+        n_factors : (int)
+            Number of latent factors to use in matrix 
+            factorization model
+        
+        item_reg : (float)
+            Regularization term for item latent factors
+        
+        user_reg : (float)
+            Regularization term for user latent factors
+        
+        verbose : (bool)
+            Whether or not to printout training progress
+        """
+        self.ratings = ratings
+        self.n_users, self.n_items = ratings.shape
+        self.n_factors = n_factors
+        self.item_reg = item_reg
+        self.user_reg = user_reg
+        self._v = verbose
+        
+    def als_step(self, latent_vectors, fixed_vecs, ratings, _lambda, type='user'):
+        """
+        One of the two ALS steps. Solve for the latent vectors
+        specified by type.
+        """
+        if type == 'user':
+            # Precompute
+            YTY = fixed_vecs.T.dot(fixed_vecs)
+            lambdaI = np.eye(YTY.shape[0]) * _lambda
+
+            for u in xrange(latent_vectors.shape[0]):
+                latent_vectors[u, :] = solve((YTY + lambdaI), 
+                                             ratings[u, :].dot(fixed_vecs))
+        elif type == 'item':
+            # Precompute
+            XTX = fixed_vecs.T.dot(fixed_vecs)
+            lambdaI = np.eye(XTX.shape[0]) * _lambda
+            
+            for i in xrange(latent_vectors.shape[0]):
+                latent_vectors[i, :] = solve((XTX + lambdaI), 
+                                             ratings[:, i].T.dot(fixed_vecs))
+        return latent_vectors
+    
+    def train(self, n_iter=10):
+        """ Train model for n_iter iterations from scratch."""
+        # initialize latent vectors
+        self.user_vecs = np.random.random((self.n_users, self.n_factors))
+        self.item_vecs = np.random.random((self.n_items, self.n_factors))
+        
+        self.partial_train(n_iter)
+    
+    def partial_train(self, n_iter):
+        """ 
+        Train model for n_iter iterations. Can be 
+        called multiple times for further training.
+        """
+        ctr = 1
+        while ctr <= n_iter:
+            if ctr % 10 == 0 and self._v:
+                print '\tcurrent iteration: {}'.format(ctr)
+            self.user_vecs = self.als_step(self.user_vecs, 
+                                           self.item_vecs, 
+                                           self.ratings, 
+                                           self.user_reg, 
+                                           type='user')
+            self.item_vecs = self.als_step(self.item_vecs, 
+                                           self.user_vecs, 
+                                           self.ratings, 
+                                           self.item_reg, 
+                                           type='item')
+            ctr += 1
+    
+    def predict(self, test, mean):
+        """ 
+        Predicts ratings based on user and 
+        item latent factors 
+        """
+        all_predictions = self.user_vecs.dot(self.item_vecs.T) + mean.reshape(-1, 1)
+        test_predictions = all_predictions[test.fillna(0).as_matrix().nonzero()]
+        return all_predictions, test_predictions
+    
+    def recommend(self, ratings, user, games, predictions):
+        '''
+        Provides recommendations for the specified user
+        
+        Params
+        ======
+        user : (string)
+            username with at least 10 ratings in database
+        
+        games : (Dataframe)
+            Dataframe of game list
+        
+        predictions : (nd_array)
+            predictions of entire ratings matrix
+        '''
+        user_idx = ratings.index.get_loc(user)
+        preds = predictions[user_idx]
+        rated = ratings.loc[user].fillna(0).as_matrix().nonzero()
+
+        mask = np.ones_like(preds, dtype=bool)
+        mask[rated] = False
+        preds[~mask] = 0
+
+        predictions = pd.Series(preds, index=ratings.columns, name='predictions')
+        recommendations = games.join(predictions, on='gameid')
+        return recommendations.sort_values('predictions', ascending=False) 
+```
+The predict and recommend methods are the same as that for the SVD class. The only difference being in how the train method is constructed with the ALS step function used to solve for the latent vectors.
+
+Here's the implementation of the grid search algorithm. I limited it to no more than 20 latent factors and 40 iterations of the ALS step in the interest of time. (The entire process took about 5 hours!)
+
+```python
+#Gridsearch of best parameters for ALS matrix factorization of ratings matrix
+%%time
+latent_factors = [5, 10, 20]
+regularizations = [0.1, 1., 10., 100.]
+regularizations.sort()
+iter_array = [1, 10, 40]
+
+best_params = {}
+best_params['n_factors'] = latent_factors[0]
+best_params['reg'] = regularizations[0]
+best_params['n_iter'] = 0
+best_params['test_rmse'] = np.inf
+best_params['model'] = None
+
+for fact in latent_factors:
+    print 'Factors: {}'.format(fact)
+    for reg in regularizations:
+        print 'Regularization: {}'.format(reg)
+        for itera in iter_array:
+            print 'Iterations: {}'.format(itera)
+            MF_ALS = ALSMF(train_normed, n_factors=fact, \
+                                user_reg=reg, item_reg=reg)
+            MF_ALS.train(n_iter = itera)
+            all_predictions, test_predictions = MF_ALS.predict(test, mean)
+            test_rmse = MF_ALS.get_rmse(y, test_predictions)
+            if test_rmse < best_params['test_rmse']:
+                best_params['n_factors'] = fact
+                best_params['reg'] = reg
+                best_params['n_iter'] = itera
+                best_params['test_rmse'] = test_rmse
+                best_params['model'] = MF_ALS
+                print 'New optimal hyperparameters'
+                print pd.Series(best_params)
+```
+
+The best parameters achieved were 40 iterations of the ALS step, of 10 factors with a regularization value of 0.1.
+
+### Train, predict, evaluate
+Next we plug these values into an instance of the ALS class, predict the values and evaluate with RMSE.
+
+```python
+#Instatiate ALSMF class
+als_train = ALSMF(train_normed, n_factors=10, item_reg=0.1, user_reg=0.1)
+
+#Train model 
+%time als_train.train(40)
+
+#Make predictions for test set
+%time all_preds_train, test_preds_train = als_train.predict(test, mean)
+
+#Evaluate RMSE on test set
+error_als = als_train.get_rmse(y, test_preds_train)
+error_als
+
+1.2785146629039117
+```
+
+The error looks to be almost as low as that generated by the SVD model with 10 latent factors. We will do a comparison below across the different models. Before that, let's look at the recommendations generated by this model.
+
+![als_list](/img/als_list.png)
+
+Much like the SVD model with 10 latent factors , the results for this list of 20 consists of games that are high in the board game geek rankings and looks very similar to that list.
+
+![als_dist](/img/als_dist.png)
+
+The plots for the non-negative matrix factorization model looks just like that for SVD with 10 latent factors
+
+# Evaluating the models
+
+So far, we have performed 2 types of offline evaluations. The RMSE scores for each model and a personal evaluation of the top 20 lists recommended to me through each algorithm. While the latter technique is less scientific, I believe it matters in the real world context as I consider myself a potential user of such a system and will evaluate its usefulness in recommending me items to explore and consider.
+
+![RMSE_table](/img/RMSE_table.png)
+
+Through this table, we can observe that the models all performed better than baseline in minimizing RMSE. What's surprising though is that the lower the number of latent factors, the better the model, but not by much. According to this set of results, it would seem that the SVD model with 10 latent factors performed the best while the cosine similarity model performed the worst.
+
+As for comparison of the various top 20 lists generated, I liked most of the lists generated except the one with Tic Tac Toe recommended (SVD with 100 latent factors). I deduce that with that many latent factors, artificial meaning has to be ascribed to my relatively small sample size of 1807 games, such that it dilutes the importance of other key features, resulting in significant prediction error.
+
+If I had to choose one list, I would go with the Cosine Similarity one as it contains the widest range of games with the most serendipituous recommendations.
+
+# Which model is best?
+
+We have seen the results of the recommendations and the RMSE scores. Judging solely by the RMSE scores we are inclined to conclude that matrix factorization with 10 latent factors (SVD or NNMF) yields the most accurate scores. However, the top 20 lists they produce seem to only include games that are already popular on the website, which begs the question, what determines popularity of a game, the number of ratings or its rank?
+
+```python
+#Plot scatterplot of number of ratings vs gamerank
+sns.jointplot(games['nratings'], games['gamerank'])
+plt.show()
+```
+
+![nratings_gamerank_corr](/img/nratings_gamerank_corr.png)
+
+A quick look at the correlation between both variables suggests that there is little to no correlation between a game's rank and how many users have rated it. Even so, we can observe that the most rated games tend to trend near the top of the rankings, while those at the bottom of the ranking chart generally receives fewer ratings.    
+
+Users that rate games on the site are quite a serious bunch and most likely would have looked for games via the ranking system first. The thing is, not all games on the top 100-200 will appeal to everyone and there is merit to recommending popular games that you will likely enjoy. However, the sense of serendipity is not there with lists that are too 'rigid' in their presentation. I was actually pleasantly surprised to discover a new game that was recommended to me via the 'lesser' cosine similarity algorithm.
+
+The quality of a board game recommender system also depends on what it is positioned to accomplish. If it is to help one narrow down the choices of games to play or purchase next, it would seem that having high accuracy on the most popular games would help. On the other hand, if it is to discover new games on a regular basis, a less accurate but more serendipitous version would be ideal.
+
+An ideal boardgame recommender system for BoardGameGeek users, at least to me personally, would be one that recommends me games from the popular bunch to look out for but also throws in some surprises with games that are further down the ranking order. Perhaps even 2 or more sets of top 20s with explanations such as "High-ranked games you might like' and 'Hidden gems similar to your taste' etc.
+
+In the next and final installment, we will be constructing our web app recommender system with Flask, deploy it on an Amazon EC2 instance and evaluate the results online to see which list out of three users of Boardgamegeek.com prefer.
