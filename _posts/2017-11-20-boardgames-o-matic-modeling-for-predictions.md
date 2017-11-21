@@ -1,6 +1,6 @@
 ---
 layout: post
-published: true
+published: false
 title: 'Boardgames-O-Matic: Modeling for Predictions'
 subtitle: >-
   Part 2 of 3 where I build a board games recommender system for
@@ -489,12 +489,12 @@ The majority of the games recommended also lies between 1-200 in gamerank which 
 # Latent factor method - Singular Value Decomposition
 The latent factor method decomposes the sparse ratings matrix into a set of latent vectors for both users and items. These are low rank approximations of the original matrix and helps to address the issue of sparsity that is characteristic of any form of explicit rating data.
 
-It should be understood that the latent space that is created by mapping both user and items onto is made up of item and user dimensions, some of which are explainable like theme and mechanics of the game, a user's preference for certain genres and game difficulties to unexplainable concepts. Each user and item can be explained by some combination of these factors and therefore predictions of a user's preference for an item can be made through a simple dot product of the user's latent vector by the transpose of that item's corresponding latent vector.
+It should be understood that the latent space that is created by mapping both user and items onto is made up of item and user features, some of which are explainable like theme and mechanics of the game, a user's preference for certain genres and game difficulties to unexplainable concepts. Each user and item can be explained by some combination of these factors and therefore predictions of a user's preference for an item can be made through a simple dot product of the user's latent vector by the transpose of that item's corresponding latent vector.
 
 We explore this concept with the Singular Value Decomposition of the ratings matrix first.
 
 ![svd_diagram](/img/svd_diagram.png)
-*A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.*
+*A sparse User-Item matrix is decomposed(broken down) into 3 components: A user matrix explained by r latent factors, an item matrix explained by r latent factors and a matrix that contains the non-negative singular values in descending order along the its diagonal. The singular values determine the magnitude of effect of the latent factors in determining the predictions. A dot product of the 3 matrices solves for the larger matrix it was decomposed from.*
 
 We build a subclass from our base Recommender class to represent the SVD model
 
@@ -680,12 +680,10 @@ The majority of these games are within the top 100 games which suggests that the
 
 As suspected, this list contains the top regarded games on BGG. This can be observd through the smaller range of games recommended in terms of gamerank from 1-150 and the inclusion of a game with a high number of ratings, Carcassone with 70895 ratings to be exact. The lower end of the number of ratings has also shifted to games where at least 10,000 users have rated the game.
 
+# Latent Factor model - Non-Negative Matrix Factorization with Weighted Alternating Least Squares
+In this final model, we will attempt to factorize the ratings matrix using the Alternating Least Squares method of minimizing the cost function. It works by holding one set of latent factors, either the user or item vector, constant at any one point in time while solving a linear equation for the other. It then alternates until convergence to a minimum. As opposed to SVD, bias terms are added to the cost function and singular values are not calculated.
 
+![mf](/img/mf.png)
+*R is the ratings matrix, U is the user matrix bounded by k latent factors and P is a transposed item matrix bounded by k latent factors. Solving for R~ij~ *
 
-
-
-
-
-
-
-
+R^ij^
