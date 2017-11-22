@@ -1,6 +1,6 @@
 ---
 layout: post
-published: false
+published: true
 title: 'Boardgames-O-Matic: Flask app and online evaluations'
 subtitle: >-
   Part 3 of 3 where I build a board games recommender system for
@@ -210,3 +210,7 @@ Some potential extensions to this project includes:
 - Explore group recommendations. Board games are mostly played by 2 or more people and a recommender that takes into account the preferences of all parties involved might be well regarded.
 - Include content-based filtering to reduce cold start problem for new games.
 - Create context aware recommendations, possibly in the form of a chat bot, that instead of recommending new games, recommends you games to bring to the next game night by asking you a series of questions
+
+*This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here]()Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/). .*
+
+*The accompanying ipython notebook can be found in the following [Github repo](https://github.com/timmoti/boardgames-o-matic).*
