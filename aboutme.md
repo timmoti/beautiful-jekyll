@@ -4,6 +4,8 @@ title: About me
 subtitle: I love data and the science behind it.
 ---
 
+Hello!
+
 My name is Timothy and I'm a data science practitioner with an entrepreneurial mindset.
 
 Where practical data science is concerned, I have 3 beliefs that have shaped my approach towards this monster of a subject:
@@ -20,5 +22,7 @@ Feel free to connect through one of the links below.
 
 Oh, and may the force be with you.
 
-P.S: If you're wondering, yes those are my initials in the little round box up top which also resembles a 'Pi' symbol. Pretty cool, at least according to me.
+P.S: In case you're wondering, yes those are my initials in the little round box up top which also resembles a 'Pi' symbol. Pretty cool, at least that's what I think.
+
+P.P.S: I thought the title of data connoisseur felt befitting for a blog where I appreciate the finer points and data and go through its subtleties. Also, the domain was available!
 
