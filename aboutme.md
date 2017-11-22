@@ -24,5 +24,5 @@ Oh, and may the force be with you.
 
 P.S: In case you're wondering, yes those are my initials in the little round box up top which also resembles a 'Pi' symbol. Pretty cool, at least that's what I think.
 
-P.P.S: I thought the title of data connoisseur felt befitting for a blog where I appreciate the finer points and data and go through its subtleties. Also, the domain was available!
+P.P.S: I thought the title of data connoisseur felt befitting for a blog where I appreciate the finer points in data and go through its subtleties. Also, the domain was available!
 
