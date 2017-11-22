@@ -184,16 +184,23 @@ One surprising thing out of the online evaluations was how both latent factor mo
 This app was developed within 4 days by a complete newbie in web development and due to the need to deploy it quickly to gather the online evaluations, not all ideas were implemented:
 
 - Storage of the input data should be in a database so as to reduce the storage and processing cost involved in handling pickled files. For reference, the 3 pickled files are 1.7GB each in size.
+
 - I was trying to figure out how to create a final multiple choice question for the user to select the best list out of the 3 but could not do so in time.
 
 Some potential extensions to this project includes:
 
 - Extending the gamelist beyond the 1807 to include games with less ratings
+
 - Evaluate with rank metrics eg: Mean Average Precision @ K
+
 - Tweak the flask routing and algorithms to be able to access real-time ratings based on API call in order to provide recommendations that are more current.
+
 - Assess a computationally less expensive approach to user-user cosine similarity. User-user similarity helps in generating serendipity and seeing as to how the item-item approach does so well in providing unexpected recommendations, it would be interesting to see how different the user-user approach would be. One way to alleviate the high computational cost would be to perform unsupervised learning first to identify nearest neighbors before calculating similarity scores.
+
 - Explore group recommendations. Board games are mostly played by 2 or more people and a recommender that takes into account the preferences of all parties involved might be well regarded.
+
 - Include content-based filtering to reduce cold start problem for new games.
+
 - Create context aware recommendations, possibly in the form of a chat bot, that instead of recommending new games, recommends you games to bring to the next game night by asking you a series of questions
 
 *This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/). Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/).*
