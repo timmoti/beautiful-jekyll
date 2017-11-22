@@ -211,6 +211,6 @@ Some potential extensions to this project includes:
 - Include content-based filtering to reduce cold start problem for new games.
 - Create context aware recommendations, possibly in the form of a chat bot, that instead of recommending new games, recommends you games to bring to the next game night by asking you a series of questions
 
-*This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here]()Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/). .*
+*This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/)Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/). .*
 
 *The accompanying ipython notebook can be found in the following [Github repo](https://github.com/timmoti/boardgames-o-matic).*
