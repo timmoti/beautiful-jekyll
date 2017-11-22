@@ -197,6 +197,8 @@ Some potential extensions to this project includes:
 
 - Assess a computationally less expensive approach to user-user cosine similarity. User-user similarity helps in generating serendipity and seeing as to how the item-item approach does so well in providing unexpected recommendations, it would be interesting to see how different the user-user approach would be. One way to alleviate the high computational cost would be to perform unsupervised learning first to identify nearest neighbors before calculating similarity scores.
 
+- Model with a graph-based network like neo4j
+
 - Explore group recommendations. Board games are mostly played by 2 or more people and a recommender that takes into account the preferences of all parties involved might be well regarded.
 
 - Include content-based filtering to reduce cold start problem for new games.
