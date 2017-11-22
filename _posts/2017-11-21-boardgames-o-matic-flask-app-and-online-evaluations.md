@@ -9,7 +9,7 @@ date: '2017-11-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/title_darkened.png
 ---
-In [part 1](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/), we scraped for data off [Boardgamegeek](http://boardgamegeek.com)(BGG). [Part 2](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/) saw us making predictions off the ratings matrix with 5 models and evaluating offline through RMSE and top 20 lists recommended for me.
+In [part 1](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/), we scraped for data off [Boardgamegeek](http://boardgamegeek.com) (BGG). [Part 2](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/) saw us making predictions off the ratings matrix with 5 models and evaluating offline through RMSE and top 20 lists recommended for me.
 
 In this final installment, we will be building a web app using [flask](http://flask.pocoo.org), a microframework based on python and deploying it via an Amazon EC2 instance. The aim is to get online evaluations from users of BGG.
 
@@ -109,22 +109,7 @@ One major issue I'd encountered while developing the app was in how variables ar
 
 Also, while it may seem trivial on the frontend, getting the logic to flow correctly while keeping the number of html templates to a minimum took some time. For example, I wanted users to be able to access the lists after they have rated all three but not be able to rate them again. In order to do so, I had to write a jinja if-else statement in the html code that checks to see the boolean condition of a particular `not_done` variable in the controller file which decides what to display onscreen.
 
-```html
-{% if not_done %}
-            <form action="/rating" method="POST">
-              <input type="hidden" name="user" value="{{ user }}"/>
-              <input type='hidden' name="algorithm" value="{{ algorithm }}"/>
-              <input type='hidden' name="algo" value="{{ algo }}"/>
-              <button type="submit" name='submit' value="good" class="btn btn-success btn-lg">Great List!</button>
-              <button type="submit" name='submit' value="not_good" class="btn btn-danger btn-lg">Not so good...</button>
-            </form>
-            {% else %}
-            <form action="/last" method="POST">
-              <input type="hidden" name="user" value="{{ user }}"/>
-              <input type='submit' name='back' value='Go Back' class='btn btn-primary btn-lg'/>
-            </form>
-            {% endif %}
-```
+![jinja_example](/img/jinja_example.png)
 
 
 # Deploying the app
@@ -174,7 +159,7 @@ But the most telling comments were the following.
 
 ![poserdisposer](/img/poserdisposer.png)
 ![eliasdkehr](/img/eliasdkehr.png)
-![aaj94](/img/aaj94)
+![aaj94](/img/aaj94.png)
 
 The item-item cosine similarity list gave the most creative and unexpected list of games as it looks at the similarity in ratings across games and reached further into the lower ranks of games for a greater diversity of options.
 
@@ -211,6 +196,6 @@ Some potential extensions to this project includes:
 - Include content-based filtering to reduce cold start problem for new games.
 - Create context aware recommendations, possibly in the form of a chat bot, that instead of recommending new games, recommends you games to bring to the next game night by asking you a series of questions
 
-*This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/)Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/). .*
+*This is part 3 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings and perform preprocessing work can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/). Part 2, where we model and predict the recommendations can be found [here](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/).*
 
 *The accompanying ipython notebook can be found in the following [Github repo](https://github.com/timmoti/boardgames-o-matic).*
