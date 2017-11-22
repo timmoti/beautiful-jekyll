@@ -939,6 +939,6 @@ In this second part of 3, I created python classes for my recommender system pip
 # Coming Up
 In the next and final installment, we will be constructing our web app recommender system with Flask, deploy it on an Amazon EC2 instance and evaluate the results online to see which list out of three users of Boardgamegeek.com prefer.
 
-*This is part 2 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings data can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/). Part 3, where we build a web app and collect online evaluations can be found [here]().*
+*This is part 2 of a 3 part series on building a board game recommender system for Boardgamegeek.com users. Part 1, where we scrape for ratings data can be found [here](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/). Part 3, where we build a web app and collect online evaluations can be found [here](https://timmoti.github.io/2017-11-11-boardgames-o-matic-flask-app-and-online-evaluations/).*
 
 *The accompanying ipython notebook can be found in the following [Github repo](https://github.com/timmoti/boardgames-o-matic).*
