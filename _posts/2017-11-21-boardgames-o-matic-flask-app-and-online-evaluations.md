@@ -167,9 +167,9 @@ Other than having universally-panned, low-ranked games turn up unexpectedly in b
 
 ![ranior](/img/ranior.png)
 
->You can view the entire forum post [here](https://boardgamegeek.com/thread/1884226/boardgames-o-matic-recommends-you-boardgames-based)
+>You can view the entire forum post [here](https://boardgamegeek.com/thread/1884226/boardgames-o-matic-recommends-you-boardgames-based).
 
->The workings to obtain the approval rating values of the 3 models can be found [here](). In it I extracted the results from a comma-separated txt file into a dataframe, performed some deduplication work, then pandas groupby operations and pivot_tables to extract the necessary information.
+>The workings to obtain the approval rating values of the 3 models can be found [here](https://github.com/timmoti/boardgames-o-matic/blob/master/Part%203_BGG%20web%20app%20deployment%20and%20online%20evaluations.ipynb). In it I extracted the results from a comma-separated txt file into a dataframe, performed some deduplication work, then pandas groupby operations and pivot_tables to extract the necessary information.
 
 # Conclusion
 
