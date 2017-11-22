@@ -7,7 +7,7 @@ subtitle: >-
   Boardgamegeek.com users
 date: '2017-11-11'
 image: /img/bgg-logo.jpg
-bigimg: /img/title_darkened.png
+bigimg: /img/part3_title.png
 ---
 In [part 1](https://timmoti.github.io/2017-10-11-scraping-for-geek-data/), we scraped for data off [Boardgamegeek](http://boardgamegeek.com) (BGG). [Part 2](https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/) saw us making predictions off the ratings matrix with 5 models and evaluating offline through RMSE and top 20 lists recommended for me.
 
