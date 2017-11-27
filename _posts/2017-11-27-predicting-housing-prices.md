@@ -1,6 +1,6 @@
 ---
 layout: post
-published: true
+published: false
 title: Predicting housing prices
 subtitle: Part 1 of 2 where I conduct an indepth EDA of the Ames housing dataset
 ---
