@@ -556,8 +556,21 @@ house['garagecondqual'] = house['garagecond'] + house['garagequal']
 house['bsmtcondqual'] = house['bsmtcond'] + house['bsmtqual']
 house.drop(['extercond', 'exterqual', 'garagecond', 'garagequal', 'bsmtcond', 'bsmtqual'], axis=1, inplace=True)
 ```
+### Cyclical Features
+The month sold variable is cyclical in nature as december is close to january and not as far apart as 1 is from 12. Let's map observations onto a circle and compute x- and y- components of that point using sin and cos functions
 
+```python
+house['mosold_sin'] = np.sin((house['mosold']-1) * (2. * np.pi/12))
+house['mosold_cos'] = np.cos((house['mosold']-1) * (2. * np.pi/12))
+house.drop('mosold', axis=1, inplace=True)
+house.shape
+(1450, 57)
 ```
+Through this stage of feature engineering, we have reduced our feature set to 57. We will next look at filter methods of feature selection to further reduce the number of dimensions in our dataset.
+
+# Feature Selection - Filter methods
+
+
 
 
 
