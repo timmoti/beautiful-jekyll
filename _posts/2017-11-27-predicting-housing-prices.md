@@ -569,7 +569,19 @@ house.shape
 Through this stage of feature engineering, we have reduced our feature set to 57. We will next look at filter methods of feature selection to further reduce the number of dimensions in our dataset.
 
 # Feature Selection - Filter methods
+Next we select a subset of the features that best explains the target variable, which in our case, is the saleprice. We do so by performing the following tests on both continuous and categorical variables.
 
+**Continuous variables**
+1. Pearson Correlation (Check for multicollinearity)
+2. Variance Inflation Factor (Check for multicollinearity)
+3. Shapiro Ranking (Test for normality)
+4. Eliminate features with low variance
+
+**Categorical variables**
+1. Eliminate features with low variance
+
+### Continuous Variables
+First, we 
 
 
 
