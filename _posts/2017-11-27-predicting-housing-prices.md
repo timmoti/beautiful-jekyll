@@ -146,7 +146,7 @@ plt.show()
 ```
 ![saleprice_dist](/img/ames/saleprice_dist.png)
 
-The dependent variable looks to be right skewed due to several high valued houses. The boxplot shows the presence of outliers beyond $340,000. For the purpose of linear regression, we do not have to assume that our dependent variable follows a normal distribution. But we will keep in mind that we might want to do some outlier processing to improve the regression results.
+The dependent variable looks to be right skewed due to several high valued houses. The boxplot shows the presence of outliers beyond $340,000. For the purpose of linear regression, we do not have to assume that our dependent variable follows a normal distribution. We will however keep in mind the fact that we might want to do some outlier processing to improve regression results.
 
 # Initial cleaning of data
 Before we dive deeper into the features, we will perform some preprocessing work. They include:
@@ -184,7 +184,7 @@ Taking a look at the data dictionary, there doesn't seem to be any reason for ne
 house.lt(0).sum().sum()
 0
 ```
-Just as expected
+Just as expected.
 
 ### 4. Remove non-residential houses
 Looking at the mszoning feature, there seems to be some buildings in our dataset that could belong to non-residential types including commercial and industrial types. Let's take a look at the distribution of housing types in our dataset.
@@ -345,8 +345,21 @@ house['masvnrtype'].unique()
 array(['BrkFace', 'None', 'Stone', 'BrkCmn', nan], dtype=object)
 
 house['masvnrarea'].unique()
+array([  1.96000000e+02,   0.00000000e+00,   1.62000000e+02,
+         3.50000000e+02,   1.86000000e+02,   2.40000000e+02,
+         2.86000000e+02,   3.06000000e+02,   2.12000000e+02,
+         1.80000000e+02,   3.80000000e+02,   2.81000000e+02,
+         6.40000000e+02,   2.00000000e+02,   2.46000000e+02,
+         1.32000000e+02,   6.50000000e+02,   1.01000000e+02,
+         4.12000000e+02,   2.72000000e+02,   4.56000000e+02,
+         1.03100000e+03,   1.78000000e+02,   5.73000000e+02,
+         3.44000000e+02,   2.87000000e+02,   1.67000000e+02,
+         1.11500000e+03,   4.00000000e+01,   1.04000000e+02,
+         5.76000000e+02,   4.43000000e+02,   4.68000000e+02,
+         6.60000000e+01,   2.20000000e+01,   2.84000000e+02,
+         ---Truncated---
 ```
-Seeing as to how there is already a 'None' value, we will impute all missing values in masvnrtype to 'None and that in masvnrarea to 0
+Seeing as to how there is already a 'None' value in masvnrtype and a 0 value in masvnrarea, we will impute all missing values in masvnrtype to 'None and that in masvnrarea to 0.
 
 ```python
 house['masvnrarea'].fillna(0, inplace=True)
@@ -498,8 +511,7 @@ house['extercond'] = house['extercond'].apply(five_ratings)
 house['bsmtqual'] = house['bsmtqual'].apply(six_ratings)
 house['bsmtcond'] = house['bsmtcond'].apply(six_ratings)
 house['bsmtfintype'] = house['bsmtfintype1'].apply(seven_ratings) + house['bsmtfintype2'].apply(seven_ratings)
-house['bsmtexposure'] = house['bsmtexposure'].apply(lambda x: 4 if x=='Gd' else 3 if x=='Av' else 2 if x=='Mn'\
-                                                   else 1 if x=="No" else 0)
+house['bsmtexposure'] = house['bsmtexposure'].apply(lambda x: 4 if x=='Gd' else 3 if x=='Av' else 2 if x=='Mn' else 1 if x=="No" else 0)
 house['heatingqc'] = house['heatingqc'].apply(five_ratings)
 house['kitchenqual'] = house['kitchenqual'].apply(five_ratings)
 house['fireplacequ'] = house['fireplacequ'].apply(six_ratings)
@@ -583,7 +595,7 @@ continuous_features = house._get_numeric_data()
 continuous_features.shape
 (1450, 32)
 ```
-#### 1. Pearson Correlation
+## 1. Pearson Correlation
 We will be using the [yellowbrick](http://www.scikit-yb.org/en/latest/) package for visualization.
 
 ```python
@@ -632,7 +644,7 @@ There is a significant relationship between both variables as evidenced by the l
 ```python
 house.drop('totrmsabvgrd', axis=1, inplace=True)
 ```
-#### 2. Variance Inflation Factor
+## 2. Variance Inflation Factor
 The Variance Inflation Factor (VIF) checks to see if any of the features in a dataset tends to exhibit multicollinearity with other variables. This is accomplished through an analysis of how 'inflated' the variance of the coefficient of a feature becomes in comparison to the other features in a multiple linear regression. A VIF more than 5 indicates high correlation while values between 1-5 show moderate correlation.
 
 ```python
@@ -662,7 +674,7 @@ plt.show()
 
 It would seem that none of our other features are highly correlated with each other although several features are moderately correlated.
 
-#### 3. Low Variance Check
+## 3. Low Variance Check
 We next identify features with low or near zero variance through the following function. Near zero variance features are qualified as those with a 19x difference in the highest value to the next highest value including having the total number of distinct values to be less than 10% of the total number of samples.
 
 Here's a function that accomplishes this check
@@ -747,10 +759,3 @@ house.shape
 By performing a series of feature engineering and feature selection, we have reduced our feature set from 81 variables to the 44 currently.
 
 In part 2, we will further process the data in order to efficiently create a model that can predict housing prices based on features of property sold previously. In particular, we will identify what are the non-renovatable features of a house that can be used to predict the value of a house and whether renovations can explain the variance in price on the actual selling price of a property and its predicted value.
-
-
-
-
-
-
-
