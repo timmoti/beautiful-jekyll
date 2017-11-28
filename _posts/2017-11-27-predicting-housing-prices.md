@@ -206,7 +206,7 @@ house.shape
 (1450, 80)
 ```
 
-### Handle Null values
+### 5. Handle Null values
 As a rule of thumb, features with more than 70% null values should be dropped as imputing them with artificial values will not be a good representation of the actual observations. 
 
 In this case, we will drop features that have more than **1020** null values
@@ -595,7 +595,7 @@ continuous_features = house._get_numeric_data()
 continuous_features.shape
 (1450, 32)
 ```
-## 1. Pearson Correlation
+### 1. Pearson Correlation
 We will be using the [yellowbrick](http://www.scikit-yb.org/en/latest/) package for visualization.
 
 ```python
@@ -644,7 +644,7 @@ There is a significant relationship between both variables as evidenced by the l
 ```python
 house.drop('totrmsabvgrd', axis=1, inplace=True)
 ```
-## 2. Variance Inflation Factor
+### 2. Variance Inflation Factor
 The Variance Inflation Factor (VIF) checks to see if any of the features in a dataset tends to exhibit multicollinearity with other variables. This is accomplished through an analysis of how 'inflated' the variance of the coefficient of a feature becomes in comparison to the other features in a multiple linear regression. A VIF more than 5 indicates high correlation while values between 1-5 show moderate correlation.
 
 ```python
@@ -674,7 +674,7 @@ plt.show()
 
 It would seem that none of our other features are highly correlated with each other although several features are moderately correlated.
 
-## 3. Low Variance Check
+### 3. Low Variance Check
 We next identify features with low or near zero variance through the following function. Near zero variance features are qualified as those with a 19x difference in the highest value to the next highest value including having the total number of distinct values to be less than 10% of the total number of samples.
 
 Here's a function that accomplishes this check
