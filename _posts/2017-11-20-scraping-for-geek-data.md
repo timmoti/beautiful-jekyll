@@ -1,10 +1,8 @@
 ---
 layout: post
 published: true
-title: 'Boardgames-O-Matic: Scraping for Geek Data'
-subtitle: >-
-  Part 1 of 3 where I build a board games recommender system for
-  Boardgamegeek.com users
+title: 'Boardgames-O-Matic: Board games recommender system'
+subtitle: Part 1 of 3 where I scrape for data on Boardgamegeek.com
 date: '2017-10-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/Game-Geek.png
