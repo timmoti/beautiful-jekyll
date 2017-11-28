@@ -1,8 +1,9 @@
 ---
 layout: post
-published: false
+published: true
 title: Predicting housing prices
 subtitle: Part 1 of 2 where I conduct an indepth EDA of the Ames housing dataset
+image: /img/ames/housing.svg
 ---
 Everyone knows about the Boston Housing Dataset. But I bet you might not have heard of the [Ames, Iowa Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data). It was featured as part of a Kaggle competition 2 years back and was significant in how it tested advanced regression techniques in the form of creative feature engineering and feature selection.
 
@@ -569,19 +570,183 @@ house.shape
 Through this stage of feature engineering, we have reduced our feature set to 57. We will next look at filter methods of feature selection to further reduce the number of dimensions in our dataset.
 
 # Feature Selection - Filter methods
-Next we select a subset of the features that best explains the target variable, which in our case, is the saleprice. We do so by performing the following tests on both continuous and categorical variables.
+Next we select a subset of the features that best explains the target variable, which in our case, is the saleprice. We do so by performing the following tests on our feature set
 
-**Continuous variables**
+
 1. Pearson Correlation (Check for multicollinearity)
 2. Variance Inflation Factor (Check for multicollinearity)
-3. Shapiro Ranking (Test for normality)
-4. Eliminate features with low variance
+3. Eliminate features with low variance
 
-**Categorical variables**
-1. Eliminate features with low variance
+First, we extract out our numeric variables
+```python
+continuous_features = house._get_numeric_data()
+continuous_features.shape
+(1450, 32)
+```
+#### 1. Pearson Correlation
+We will be using the [yellowbrick](http://www.scikit-yb.org/en/latest/) package for visualization.
 
-### Continuous Variables
-First, we 
+```python
+from yellowbrick.features.rankd import Rank2D, Rank1D
+y = continuous_features['saleprice']
+X = continuous_features.drop(['saleprice'], axis=1)
+plt.figure(figsize=(10,10))
+visualizer = Rank2D()
+visualizer.fit(X,y)
+visualizer.transform(X)
+visualizer.poof()
+```
+![pearson1](/img/ames/pearson1.png)
+
+We can see firstly that garagecars and garagearea are highly correlated. We will drop garagecars as it looks to have higher correlation with other variables. Next, we can observe that fireplacequ and fireplaces are also highly correlated. We will drop fireplacequ as it too looks to have higher correlation with other variables. houseage and garageage look to be rather highly correlated too. We will drop houseage in favour of the other variable with lower correlation to other predictors. Finally, totrmsabvdrd looks to be highly correlated with grlivarea and bedroomabvgr. Let's investigate!
+
+```python
+house.drop(['garagecars', 'fireplacequ', 'houseage'], axis=1, inplace=True)
+```
+
+```python
+observed = pd.crosstab(house['totrmsabvgrd'], house['bedroomabvgr'])
+chi2_contingency(observed)
+2976.3876070778488,
+ 0.0
+ ---Truncated---
+```
+It seems reasonable enough to understand why a relationship is observed between number of bedrooms above grade and total number of rooms above grade, which is further proven by the significant chi2 test result. Let's look at the relationship between totrmsabvgrd, a categorical variable, and the grlivarea, a continuous one using an ANOVA one-way test.
+
+```python
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+ 
+mod = ols('grlivarea ~ totrmsabvgrd',
+                data=house).fit()
+                
+aov_table = sm.stats.anova_lm(mod, typ=2)
+print aov_table
+                   sum_sq      df            F  PR(>F)
+totrmsabvgrd  2.721091e+08     1.0  3090.157687     0.0
+Residual      1.275061e+08  1448.0          NaN     NaN
+```
+There is a significant relationship between both variables as evidenced by the low p-value of the ANOVA test. We'll drop totrmsabvgrd as a potential predictor.
+
+```python
+house.drop('totrmsabvgrd', axis=1, inplace=True)
+```
+#### 2. Variance Inflation Factor
+The Variance Inflation Factor (VIF) checks to see if any of the features in a dataset tends to exhibit multicollinearity with other variables. This is accomplished through an analysis of how 'inflated' the variance of the coefficient of a feature becomes in comparison to the other features in a multiple linear regression. A VIF more than 5 indicates high correlation while values between 1-5 show moderate correlation.
+
+```python
+#We need to reset our continuous features and X as we have dropped some variables
+continuous_features = house._get_numeric_data()
+X = continuous_features.drop('saleprice', axis=1)
+
+#We need to standardize our features first
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+Xs = scaler.fit_transform(X)
+
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+VIF = [(continuous_features.columns[i], variance_inflation_factor(Xs, i)) for i in range(Xs.shape[1])]
+
+VIF_df = pd.DataFrame(list(zip(*VIF)[1]), index = list(zip(*VIF)[0]))
+
+fig, ax = plt.subplots()
+VIF_df.plot(kind = 'bar', legend = False, ax = ax)
+ax.axhline(5, c = 'r', lw = 3)
+ax.text(5, 5.2, 'If VIF is above this boundary, column is multi-collinear')
+plt.show()
+```
+![vif](/img/ames/vif.png)
+
+It would seem that none of our other features are highly correlated with each other although several features are moderately correlated.
+
+#### 3. Low Variance Check
+We next identify features with low or near zero variance through the following function. Near zero variance features are qualified as those with a 19x difference in the highest value to the next highest value including having the total number of distinct values to be less than 10% of the total number of samples.
+
+Here's a function that accomplishes this check
+```python
+def nearZeroVariance(X, freqCut = 95 / 5, uniqueCut = 5):
+    '''
+    Determine predictors with near zero or zero variance.
+    Inputs:
+    X: pandas data frame
+    freqCut: the cutoff for the ratio of the most common value to the second most common value
+    uniqueCut: the cutoff for the percentage of distinct values out of the number of total samples
+    Returns a tuple containing a list of column names: (zeroVar, nzVar)
+    '''
+
+    colNames = X.columns.values.tolist()
+    freqRatio = dict()
+    uniquePct = dict()
+
+    for names in colNames:
+        counts = (
+            (X[names])
+            .value_counts()
+            .sort_values(ascending = False)
+            .values
+            )
+
+        if len(counts) == 1:
+            freqRatio[names] = -1
+            uniquePct[names] = (float(len(counts)) / len(X[names])) * 100
+            continue
+
+        freqRatio[names] = counts[0] / counts[1]
+        uniquePct[names] = (float(len(counts)) / len(X[names])) * 100
+
+    zeroVar = list()
+    nzVar = list()
+    for k in uniquePct.keys():
+        if freqRatio[k] == -1:
+            zeroVar.append(k)
+
+        if uniquePct[k] < uniqueCut and freqRatio[k] > freqCut:
+            nzVar.append(k)
+
+    return(zeroVar, nzVar)
+```
+We will put our entire feature set into the function.
+
+```python
+X = house.drop('saleprice', axis=1)
+zeroVar, nzVar = nearZeroVariance(X)
+print zeroVar, nzVar
+[] ['landslope', 'functional', 'kitchenabvgr', 'roofmatl', 'street', 'landcontour', 'miscval', 'utilities', 'heating']
+```
+These are the featrues that are identified to have low variance. Let's take a look at their distribution.
+
+```python
+features = house.loc[:, ['landslope', 'functional', 'kitchenabvgr', 'roofmatl', 'street', 'landcontour', 'miscval',
+                         'utilities', 'heating']]
+
+fig, ax = plt.subplots(nrows=3, ncols = 3, figsize = (16,16))
+
+for idx, col_name in enumerate(features.columns):
+    row = int(idx / 3)
+    col = int(idx % 3)
+    ax[row][col].set_title(col_name)
+    ax[row][col].hist(house[col_name].factorize()[0])
+
+plt.tight_layout()
+
+fig.patch.set_facecolor('white')
+```
+![low_variance](/img/ames/low_variance.png)
+
+We can indeed observe the high prevalence for one value, the 0 value, and minimal contribution by the others. We will drop these features from our dataset.
+
+```python
+house.drop(['landslope', 'functional', 'kitchenabvgr', 'roofmatl', 'street', 'landcontour', 'miscval', 'utilities', 'heating'], axis=1, inplace=True)
+house.shape
+(1450, 44)
+```
+
+By performing a series of feature engineering and feature selection, we have reduced our feature set from 81 variables to the 44 currently.
+
+In part 2, we will further process the data in order to efficiently create a model that can predict housing prices based on features of property sold previously. In particular, we will identify what are the non-renovatable features of a house that can be used to predict the value of a house and whether renovations can explain the variance in price on the actual selling price of a property and its predicted value.
 
 
 
