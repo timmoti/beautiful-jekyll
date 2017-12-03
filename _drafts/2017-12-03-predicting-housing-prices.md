@@ -437,6 +437,3 @@ Judging by the R2 values alone, we will use the Gradient Boosted Regressor as ou
 We have seen that the main criteria to look for in estimating the saleprice of a house in Ames is its living area above ground. Other area-related features like porch and basement square feet can and should be taken into consideration too.
 
 This is only half the story however. We want to also investigate how much more the renovatable features contribute to the saleprice of a house and which are the most cost-efficient renovations that we can do to derive the most value. This will be covered in the final part of this 3-part series on predicting house prices with regression techniques
-
-
-
