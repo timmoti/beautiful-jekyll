@@ -2,7 +2,7 @@
 layout: post
 published: true
 title: Predicting housing prices
-subtitle: Part 1 of 3 where I conduct an indepth EDA of the Ames housing dataset
+subtitle: Part 1 of 3 where we conduct an indepth EDA of the Ames housing dataset
 image: /img/ames/housing.svg
 ---
 Everyone knows about the Boston Housing Dataset. But I bet you might not have heard of the [Ames, Iowa Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data). It was featured as part of a Kaggle competition 2 years back and was significant in how it tested advanced regression techniques in the form of creative feature engineering and feature selection.
