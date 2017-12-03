@@ -119,7 +119,8 @@ Accuracy:  0.849961639539
 We can see that the accuracy has significantly improved over the baseline linear regression model. Let's take a look at the top 40 features it has ranked in terms of their coefficient scores.
 
 ![ridge](/img/ames/ridge.png)
-*We can see that the coefficient with the greatest score, grlivarea, is about 2x more in magnitude than the coefficient with the 2nd largest value. We also note that there are several neighbourhood features that are deemed to be of significant contribution to the model.*
+
+We can see that the coefficient with the greatest score, grlivarea, is about 2x more in magnitude than the coefficient with the 2nd largest value. We also note that there are several neighbourhood features that are deemed to be of significant contribution to the model.
 
 ## Lasso Regression
 Similar to Ridge, Lasso regression helps in solving the multicollinearity problem by shrinking coefficients of unwanted features. It does so more brutally by making them 0. Like Ridge, we will be using the cross-validated version of the algorithm here.
@@ -134,7 +135,8 @@ RMSE:  30729.9549562
 Accuracy:  0.851459674557
 ```
 ![lasso](/img/ames/lasso.png)
-*The values of the coefficients in the lasso regression model are higher than those in the ridge as several coefficients have been reduced to 0. grlivarea tops out at 31,000, compared to 23,000 in ridge. The proportion of differences between the top 40 coefficients also look to be similar to that of the Ridge regression.*
+
+The values of the coefficients in the lasso regression model are higher than those in the ridge as several coefficients have been reduced to 0. grlivarea tops out at 31,000, compared to 23,000 in ridge. The proportion of differences between the top 40 coefficients also look to be similar to that of the Ridge regression.
 
 ```python
 lasso_coefs['variable'].loc[lassoregcv.coef_ == 0]
@@ -321,7 +323,8 @@ RMSE:  24047.6741039
 Accuracy:  0.909036601209
 ```
 ![gbr](/img/ames/gbr.png)
-*We can see that this provides us with the best accuracy score yet. The most important feature from this model is identified to be the area of the living area above ground. Let's look at a plot of the residuals to see if this model fulfils the assumption of the homodasceity of its errors.*
+
+We can see that this provides us with the best accuracy score yet. The most important feature from this model is identified to be the area of the living area above ground. Let's look at a plot of the residuals to see if this model fulfils the assumption of the homodasceity of its errors.
 
 ```python
 from yellowbrick.regressor.residuals import ResidualsPlot
@@ -331,7 +334,8 @@ visualizer.score(Xs_fixed_test, y_fixed_test)
 visualizer.poof()
 ```
 ![gbr_resid](/img/ames/gbr_resid.png)
-*We can see that there does not seem to be a clear pattern forming that is characteristic of residuals with heterodasceity. Most values lie within +- 100,000, even for values that are on the higher end of the predicted vallues. There are a couple of points with high error values though that suggests the presence of outliers that can not be explained by the model.*
+
+We can see that there does not seem to be a clear pattern forming that is characteristic of residuals with heterodasceity. Most values lie within +- 100,000, even for values that are on the higher end of the predicted vallues. There are a couple of points with high error values though that suggests the presence of outliers that can not be explained by the model.
 
 ```python
 from yellowbrick.regressor import PredictionError
@@ -343,7 +347,8 @@ visualizer.score(Xs_fixed_test, y_fixed_test)
 visualizer.poof()
 ```
 ![gbr_predplot](/img/ames/gbr_predplot.png)
-*The prediction error line with the best fit shows that our gradient boosted linear model was able to predict most of the saleprices in our test set. We will now look at how we might want to remove some outliers to improve our model even further.*
+
+The prediction error line with the best fit shows that our gradient boosted linear model was able to predict most of the saleprices in our test set. We will now look at how we might want to remove some outliers to improve our model even further.
 
 # Outlier Handling
 We look at our outliers at this point as we know what our most important feature is in predicting the saleprice. First we create a dataframe for all the fixed features including our saleprice. Doing so helped me realize that I needed to reset my index after dropping the 10 non-residential properties in part 1, which I have promptly gone back to edit.
