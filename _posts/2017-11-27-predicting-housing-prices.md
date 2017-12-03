@@ -204,6 +204,10 @@ It seems that other than 10 commercial buildings, the other types are residentia
 house = house.loc[house['mszoning'] != 'C (all)',:]
 house.shape
 (1450, 80)
+
+#Reset index and drop id column
+house.reset_index(drop=True, inplace=True)
+house.drop('id', axis=1, inplace=True)
 ```
 
 ### 5. Handle Null values
