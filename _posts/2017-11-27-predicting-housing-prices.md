@@ -763,3 +763,5 @@ house.shape
 By performing a series of feature engineering and feature selection, we have reduced our feature set from 81 variables to the 44 currently.
 
 In [part 2](http://thedataconnoisseur.com/2017-12-03-predicting-housing-prices/), we will further process the data in order to efficiently create a model that can predict housing prices based on features of property sold previously. In particular, we will identify what are the non-renovatable features of a house that can be used to predict the value of a house and what renovations can best explain the variance in price on the actual selling price of a property and its predicted value.
+
+*The repo for this series can be found [here](https://github.com/timmoti/predict-house-prices-ames)*
