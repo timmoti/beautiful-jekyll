@@ -29,6 +29,7 @@ navbar-links:
     - Boardgames-O-Matic part 2: "https://timmoti.github.io/2017-11-05-boardgames-o-matic-modeling-for-predictions/"
     - Boardgames-O-Matic part 3: "https://timmoti.github.io/2017-11-11-boardgames-o-matic-flask-app-and-online-evaluations/"
     - Predicting Housing Prices (Ames) part 1: "http://thedataconnoisseur.com/2017-11-27-predicting-housing-prices/"
+    - Predicting Housing Prices (Ames) part 2: "http://thedataconnoisseur.com/2017-12-03-predicting-housing-prices/"
   Github: "https://github.com/timmoti"
 
 # Image to show in the navigation bar - image must be a square (width = height)
