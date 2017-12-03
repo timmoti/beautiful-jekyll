@@ -2,7 +2,7 @@
 layout: post
 published: true
 title: 'Boardgames-O-Matic: Board Games Recommender System'
-subtitle: Part 3 of 3 where I build a Flask app and acquire online evaluations
+subtitle: Part 3 of 3 where we build a Flask app and acquire online evaluations
 date: '2017-11-11'
 image: /img/bgg-logo.jpg
 bigimg: /img/part3_title.png
