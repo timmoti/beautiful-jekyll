@@ -2,12 +2,12 @@
 layout: post
 published: true
 title: Predicting housing prices
-subtitle: Part 1 of 2 where I conduct an indepth EDA of the Ames housing dataset
+subtitle: Part 1 of 3 where I conduct an indepth EDA of the Ames housing dataset
 image: /img/ames/housing.svg
 ---
 Everyone knows about the Boston Housing Dataset. But I bet you might not have heard of the [Ames, Iowa Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data). It was featured as part of a Kaggle competition 2 years back and was significant in how it tested advanced regression techniques in the form of creative feature engineering and feature selection.
 
-In this 2 part series, I will be going through my approach to exploring the data in the first post, followed by linear regression modeling in order to predict housing prices based on certain criteria in the second.
+In this 3 part series, I will be going through my approach to exploring the data in the first post, followed by linear regression modeling in order to predict housing prices based on features that are non-renovatable in the second. The 3rd and final part will bring in the renovatable features to identify what features offer the best value in improving the final selling price of the house.
 
 # Imports and Overview
 We first perform the usual imports
@@ -758,4 +758,4 @@ house.shape
 
 By performing a series of feature engineering and feature selection, we have reduced our feature set from 81 variables to the 44 currently.
 
-In part 2, we will further process the data in order to efficiently create a model that can predict housing prices based on features of property sold previously. In particular, we will identify what are the non-renovatable features of a house that can be used to predict the value of a house and whether renovations can explain the variance in price on the actual selling price of a property and its predicted value.
+In part 2, we will further process the data in order to efficiently create a model that can predict housing prices based on features of property sold previously. In particular, we will identify what are the non-renovatable features of a house that can be used to predict the value of a house and what renovations can best explain the variance in price on the actual selling price of a property and its predicted value.
