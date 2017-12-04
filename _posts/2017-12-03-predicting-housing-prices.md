@@ -21,7 +21,7 @@ print len(fixed_features)
 ```
 We have 26 features that have been identified as non-renovatable ones. I should point out that the variables saletype and salecondition have been left out as predictors as they do not fit into either categories in predicting housing prices. They are describing the sale and would do little to help predict on unknown data.
 
-Next we set up X_fixed and y_fixed with patsy. Patsy is utilized much like an R glm statement and quickly generates our predictor dataframe with dummy variables encoded for categorical features as well as the dependent variable.
+Next we set up X_fixed and y_fixed with patsy. Patsy is utilized much like an R glm function and quickly generates our predictor dataframe with dummy variables encoded for categorical features as well as the dependent variable.
 
 ```python
 import patsy
