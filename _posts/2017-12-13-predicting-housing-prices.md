@@ -112,5 +112,17 @@ RMSE:  3.3288202285e+16
 R2:  -1.74301533309e+23
 ```
 
-As expected, there are multiple collinear features 
+As expected, there are multiple collinear features present in our extended feature set.
+
+We model with an untuned gradient boosted regressor first followed by a tuned one. As before, we will leave out the hypertuning steps.
+
+```python
+gbr_base.fit(X_train, y_train)
+model(gbr_base, X_train, X_test, y_train, y_test, bar_plot=False)
+
+Model Report:
+RMSE:  21757.2610489
+Accuracy:  0.925538982099
+
+
 
