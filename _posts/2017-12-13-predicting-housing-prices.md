@@ -1,12 +1,12 @@
 ---
 layout: post
-published: false
+published: true
 title: Predicting Housing Prices
 subtitle: Part 3 of 3 where we recommend types of Ames houses to purchase for sale
 date: '2017-12-10'
 image: /img/ames/housing.svg
 ---
-Back in part 1, we preprocessed our housing data and performed some EDA on it. We then proceeded to model the fixed, non-renovatable features through a series of regression analyses in part 2. 
+Back in [part 1](http://thedataconnoisseur.com/2017-11-27-predicting-housing-prices/), we preprocessed our housing data and performed some EDA on it. We then proceeded to model the fixed, non-renovatable features through a series of regression analyses in [part 2](http://thedataconnoisseur.com/2017-12-03-predicting-housing-prices/). 
 
 In this final segment, we will attempt to analyze the impact the renovatable features have on the overall model by modeling to see how much these features can explain the variance we observe from our gradient boosted model using only the fixed features.
 
