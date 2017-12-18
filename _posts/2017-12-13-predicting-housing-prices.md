@@ -185,7 +185,9 @@ Our results clearly show that the renovatable features of a house have very litt
 
 This is further corroborated with the result of our hypothesis testing between the predicted values of both the fixed feature only model and the all feature model where there is no significant difference found in the values.
 
-I would propose that a house be bought only when the predicted price with the gbr_best model (fixed features only) is at least $20,000 lower than the listed saleprice. This accounts for the RMSE amount seen in our best model of $19,011
+I would propose that a house be bought only when the predicted price with the gbr_best model (fixed features only) is at least $20,000 lower than the listed saleprice. This accounts for the RMSE amount seen in our best model of $19,011.
+
+
 
 
 
