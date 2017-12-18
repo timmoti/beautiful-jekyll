@@ -152,6 +152,13 @@ visualizer.poof()
 We can see that our training set has hardly any residuals, which suggests that this model with all the features accounts for almost all the variance in predicting the dependent variable. However, this is a clear sign of overfitting even though our R<sup>2</sup> score on the test set seems to have improved.
 
 One interesting observation I had was when I fit the model with only the fixed features onto the full dataset with all features. The R<sup>2</sup> score actually increased to 0.9431. The residual plot showed no clear pattern and the training set was not overfit.
+```python
+model(gbr_best, X_train, X_test, y_train, y_test)
+
+Model Report:
+RMSE:  19011.1311829
+R2:  0.943149218251
+```
 ![gbr_best_all_resid](/img/ames/gbr_best_all_resid.png)
 
 # Hypothesis test for difference.
@@ -171,5 +178,15 @@ Ttest_indResult(statistic=0.00447121767853376, pvalue=0.99643510323552464)
 ```
 
 Our t-test result clearly shows that there is no difference between the predicted values using either model
+
+# Recommendations on type of houses to buy
+
+Our results clearly show that the renovatable features of a house have very little impact on the property's final saleprice, at least as can be observed from this dataset in Ames, Iowa. The low R<sup>2</sup> score of 0.0565 suggests that renovatable features are unable to explain the differences seen in the predicted price with our fixed feature model and the actual saleprice of the houses very well.
+
+This is further corroborated with the result of our hypothesis testing between the predicted values of both the fixed feature only model and the all feature model where there is no significant difference found in the values.
+
+I would propose that a house be bought only when the predicted price with the gbr_best model (fixed features only) is at least $20,000 lower than the listed saleprice. This accounts for the RMSE amount seen in our best model of $19,011
+
+
 
 
