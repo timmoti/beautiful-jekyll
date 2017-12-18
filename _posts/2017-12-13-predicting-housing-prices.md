@@ -187,6 +187,12 @@ This is further corroborated with the result of our hypothesis testing between t
 
 I would propose that a house be bought only when the predicted price with the gbr_best model (fixed features only) is at least $20,000 lower than the listed saleprice. This accounts for the RMSE amount seen in our best model of $19,011.
 
+# Summary
+
+After extensive preprocessing and modeling, we were able to determine that renovatable features of the houses in Ames, Iowa do not matter as much as its fixed features in predicting saleprices. Our best model consisted only of fixed features and has an RMSE of $19,011. 
+
+The data was trained on pre 2010 data on 1276 observations and tested on 172 samples with transactions all occuring in 2010. While this model held true in 2010, it would be more prudent to continue updating the model with new data as we progress through the years. It might evolve to place more emphasis on renovatable features as markets and tastes change over time.
+
 
 
 
