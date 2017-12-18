@@ -136,7 +136,7 @@ RMSE:  19932.789609
 R2:  0.937503357079
 ```
 
-Our R<sup>2<sup> looks to have improved by about 1.2 percentage points. Let's take a look at the residuals.
+Our R<sup>2</sup> looks to have improved by about 1.2 percentage points. Let's take a look at the residuals.
   
 ```python
 Xs_train = ss.fit_transform(X_train)
@@ -192,9 +192,3 @@ I would propose that a house be bought only when the predicted price with the gb
 After extensive preprocessing and modeling, we were able to determine that renovatable features of the houses in Ames, Iowa do not matter as much as its fixed features in predicting saleprices. Our best model consisted only of fixed features and has an RMSE of $19,011. 
 
 The data was trained on pre 2010 data on 1276 observations and tested on 172 samples with transactions all occuring in 2010. While this model held true in 2010, it would be more prudent to continue updating the model with new data as we progress through the years. It might evolve to place more emphasis on renovatable features as markets and tastes change over time.
-
-
-
-
-
-
