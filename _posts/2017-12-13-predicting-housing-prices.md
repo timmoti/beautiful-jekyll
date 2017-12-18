@@ -117,12 +117,59 @@ As expected, there are multiple collinear features present in our extended featu
 We model with an untuned gradient boosted regressor first followed by a tuned one. As before, we will leave out the hypertuning steps.
 
 ```python
-gbr_base.fit(X_train, y_train)
 model(gbr_base, X_train, X_test, y_train, y_test, bar_plot=False)
 
 Model Report:
 RMSE:  21757.2610489
 Accuracy:  0.925538982099
+```
 
+Our base accuracy with all features before hyperparameter tuning is already better than the model with just the fixed features with R<sup>2</sup>at 0.9251.
+
+```python
+gbr_best_all = GradientBoostingRegressor(max_depth=22, min_samples_split=24, min_samples_leaf = 3,max_features='sqrt', n_estimators=25600, subsample=0.85, learning_rate=0.001, random_state=123)
+
+model(gbr_best_all, X_train, X_test, y_train, y_test)
+
+Model Report:
+RMSE:  19932.789609
+R2:  0.937503357079
+```
+
+Our R<sup>2<sup> looks to have improved by about 1.2 percentage points. Let's take a look at the residuals.
+  
+```python
+Xs_train = ss.fit_transform(X_train)
+Xs_test = ss.fit_transform(X_test)
+
+visualizer = ResidualsPlot(gbr_best_all)
+visualizer.fit(Xs_train, y_train)
+visualizer.score(Xs_test, y_test)
+visualizer.poof()
+```
+![gbr_all_resid](/img/ames/gbr_all_resid.png)
+
+We can see that our training set has hardly any residuals, which suggests that this model with all the features accounts for almost all the variance in predicting the dependent variable. However, this is a clear sign of overfitting even though our R<sup>2</sup> score on the test set seems to have improved.
+
+One interesting observation I had was when I fit the model with only the fixed features onto the full dataset with all features. The R<sup>2</sup> score actually increased to 0.9431. The residual plot showed no clear pattern and the training set was not overfit.
+![gbr_best_all_resid](/img/ames/gbr_best_all_resid.png)
+
+# Hypothesis test for difference.
+
+Let's see if there's a significant difference in this improvement in R<sup>2</sup> values by performing a 2-sided T-test. Our null hypothesis states that there is no difference between the predicted values for the model with only the fixed features and the model with all features.
+
+```python
+gbr_best.fit(Xs_train, y_train)
+gbr_fixed = gbr_best.predict(Xs_test)
+
+gbr_best_all.fit(Xs_train, y_train)
+gbr_all = gbr_best_all.predict(Xs_test)
+
+stats.ttest_ind(gbr_fixed, gbr_all)
+
+Ttest_indResult(statistic=0.00447121767853376, pvalue=0.99643510323552464)
+```
+
+Our t-test result clearly shows that there is no difference between the predicted values using either model
 
 
