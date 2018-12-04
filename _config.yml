@@ -14,10 +14,10 @@ baseurl: ""
 # Of course don't forget to change the username and projectname to YOUR username and project
 
 # Name of website
-title: The Data Connoisseur
+title: Timmoti
 
 # Short description of your site
-description: I love data and the science behind it
+description: Ramblings
 
 # --- Navigation bar options --- #
 
@@ -98,7 +98,7 @@ share-links-active:
 
 # --- Misc --- #
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
-disqus: "www-thedataconnoisseur-com"
+# disqus: "" 
 
 # Fill in your Google Analytics ID to track your website using GA
 google_analytics: "UA-109832803-1"
